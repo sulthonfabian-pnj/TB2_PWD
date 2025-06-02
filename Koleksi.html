@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jelajahi - Museum Basoeki Abdullah</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Include Font Awesome for the arrow icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            background: url('https://i0.wp.com/direktorionlinemuseumdiindonesia.wordpress.com/wp-content/uploads/2017/05/mus-basuk-abdullah.jpg?w=2100&h=&ssl=1') no-repeat fixed center/cover;
+            background-attachment: fixed;
+        }
+
+        header {
+            background-color: #000;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-left nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            text-transform: uppercase;
+            margin: 0 15px;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-left nav a:hover {
+            color: #f5a623;
+        }
+
+        .nav-left nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #f5a623;
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        .nav-left nav a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .nav-separator {
+            color: #fff;
+            margin: 0 10px;
+        }
+
+        .right-section {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .operating-hours {
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .tickets-btn {
+            background-color: #f5a623;
+            color: #fff;
+            padding: 12px 25px;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .tickets-btn:hover {
+            background-color: #e5941e;
+        }
+
+        .hero {
+            position: relative;
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            max-width: 600px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .content-section {
+            padding: 40px 20px;
+            background: #ffffff;
+            opacity: 1;
+            margin: 20px 0;
+            width: 100%;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .content-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .events-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .event-card {
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            background-color: #f5a623;
+        }
+
+        .event-card img {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            display: block;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        .event-card .event-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .event-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333333;
+            transition: color 0.3s;
+        }
+
+        .event-card p {
+            font-size: 16px;
+            color: #555555;
+            margin-bottom: 15px;
+            transition: color 0.3s;
+        }
+
+        .event-card .book-online {
+            display: inline-block;
+            background-color: #f5a623;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .event-card:hover .book-online {
+            background-color: #e5941e;
+        }
+
+        .event-card:hover h3,
+        .event-card:hover p {
+            color: #ffffff;
+        }
+
+        /* Back to Top Button Styling */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #f5a623;
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s, background-color 0.3s;
+            z-index: 1000;
+        }
+
+        .back-to-top:hover {
+            background-color: #e5941e;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        footer .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        footer .footer-nav {
+            margin-bottom: 20px;
+        }
+
+        footer a {
+            color: #f5a623;
+            text-decoration: none;
+            margin: 0 15px;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #e5941e;
+        }
+
+        footer a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #f5a623;
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        footer a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .social-media {
+            margin: 20px 0;
+        }
+
+        .social-media a {
+            margin: 0 15px;
+            display: inline-block;
+        }
+
+        .newsletter h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .newsletter form {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter input {
+            padding: 12px;
+            border: none;
+            flex: 1;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .newsletter button {
+            background-color: #f5a623;
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .newsletter button:hover {
+            background-color: #e5941e;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .events-container {
+                grid-template-columns: 1fr;
+            }
+
+            .event-card img {
+                height: 250px;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-left, .right-section {
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* Adjust back-to-top button for smaller screens */
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .content-section h2 {
+                font-size: 28px;
+            }
+
+            .event-card img {
+                height: 200px;
+            }
+
+            .nav-left nav a {
+                margin: 0 10px;
+            }
+
+            .nav-separator {
+                display: none;
+            }
+
+            .newsletter form {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-left">
+            <nav>
+                <a href="index.html">Beranda</a><span class="nav-separator">|</span>
+                <a href="visit.html">Kunjungi</a><span class="nav-separator">|</span>
+                <a href="exhibitions.html">Pameran & Acara</a><span class="nav-separator">|</span>
+                <a href="Koleksi.html">Jelajahi</a>
+            </nav>
+        </div>
+        <div class="right-section">
+            <span class="operating-hours">Buka Hari Ini: 08:00 → 16:00</span>
+            <a href="#" class="tickets-btn">Tiket</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Jelajahi</h1>
+        <p>Temukan beragam koleksi menarik yang dimiliki sang maestro seniman di Museum Basoeki Abdullah</p>
+    </section>
+
+    <section class="content-section">
+        <h2>Beragam Koleksi Menarik</h2>
+        <div class="events-container">
+            <div class="event-card">
+                <img src="assets/1.jpg" alt="Pameran Menyongsong Hari Esok">
+                <div class="event-info">
+                    <h3>Lukisan Gerakan Non-Blok</h3>
+                    <p>Jelajahi lukisan yang mendeskripsikan gerakan non-blok </p>
+                </div>
+            </div>
+            <div class="event-card">
+                <img src="assets/16.jpg" alt="Pameran Bayang-Bayang Basoeki Abdullah">
+                <div class="event-info">
+                    <h3>Pemandangan<h3>
+                    <p>Rasakah indahnya lukisan yang memberikan anda kenyamanan akan indahnya alam</p>
+                </div>
+            </div>
+            <div class="event-card">
+                <img src="assets/32.jpg" alt="Pameran Membangun Harmoni">
+                <div class="event-info">
+                    <h3>Potret Wanita</h3>
+                    <p>jelajahi beberapa artistik figur wanita yang memukau</p>
+                </div>
+            </div>
+            <div class="event-card">
+                <img src="assets/Gatotkaca dan Antasena.webp" alt="Pameran Bersama">
+                <div class="event-info">
+                    <h3>Kisah Rakyat</h3>
+                    <p>Kunjungi beragam lukisan dengan tema cerita rakyat</p>
+                </div>
+            </div>
+            <div class="event-card">
+                <img src="assets/Basuki Abdullah.jpg" alt="Pameran Semesta Perempuan">
+                <div class="event-info">
+                    <h3>Potret Diri</h3>
+                    <p>Eksplorasi karya seni figuran sang maestro itu sendiri</p>
+                </div>
+            </div>
+            <div class="event-card">
+                <img src="assets/18.jpg" alt="Pameran Ideolog">
+                <div class="event-info">
+                    <h3>Abstraksi</h3>
+                    <p>Beragam lukisan abstrak yang melambangkan ekspresi yang bermacam-macam</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" title="Kembali ke Atas">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <footer>
+        <div class="footer-logo">Museum Basoeki Abdullah</div>
+        <div class="social-media">
+            <h3>Ikuti Kami</h3>
+            <a href="https://www.instagram.com" target="_blank">Instagram</a>
+            <a href="https://www.x.com" target="_blank">Twitter/X</a>
+            <a href="https://www.facebook.com" target="_blank">Facebook</a>
+            <a href="https://www.youtube.com" target="_blank">YouTube</a>
+            <a href="https://www.tiktok.com" target="_blank">TikTok</a>
+        </div>
+        <div class="newsletter">
+            <h3>Newsletter</h3>
+            <form>
+                <input type="email" placeholder="Masukkan email Anda" required>
+                <button type="submit">Berlangganan</button>
+            </form>
+        </div>
+        <p>© 2025 Museum Basoeki Abdullah. Hak cipta dilindungi.</p>
+    </footer>
+
+    <!-- Include jQuery from CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Handle Back to Top button visibility and click behavior
+        $(document).ready(function() {
+            // Show/hide button based on scroll position
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 300) { // Show button after scrolling 300px
+                    $('.back-to-top').addClass('show');
+                } else {
+                    $('.back-to-top').removeClass('show');
+                }
+            });
+
+            // Smooth scroll to top on button click
+            $('.back-to-top').click(function(e) {
+                e.preventDefault(); // Prevent default anchor behavior
+                $('html, body').animate({ scrollTop: 0 }, 600); // Animate scroll to top over 600ms
+            });
+        });
+    </script>
+</body>
+</html>
