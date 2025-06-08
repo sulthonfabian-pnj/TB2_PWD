@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <!-- Character encoding and responsive viewport -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kunjungi - Museum Basoeki Abdullah</title>
+    <!-- Fonts: Playfair Display for headings, Open Sans for text -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Include Font Awesome for the arrow icon -->
+    <!-- Font Awesome for back-to-top arrow icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- jQuery for animations -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
+        /* Reset and base styles */
         * {
             margin: 0;
             padding: 0;
@@ -20,8 +25,10 @@
             line-height: 1.6;
             background: url('https://i0.wp.com/direktorionlinemuseumdiindonesia.wordpress.com/wp-content/uploads/2017/05/mus-basuk-abdullah.jpg?w=2100&h=&ssl=1') no-repeat fixed center/cover;
             background-attachment: fixed;
+            overflow-x: hidden;
         }
 
+        /* Header styles */
         header {
             background-color: #000;
             padding: 20px 30px;
@@ -33,13 +40,23 @@
             z-index: 100;
         }
 
+        .nav-left {
+            display: flex;
+            align-items: center;
+        }
+
         .nav-left nav a {
             color: #fff;
             text-decoration: none;
             font-size: 16px;
             text-transform: uppercase;
             margin: 0 15px;
+            position: relative;
             transition: color 0.3s;
+        }
+
+        .nav-left nav a:first-child {
+            margin-left: 0;
         }
 
         .nav-left nav a:hover {
@@ -84,6 +101,7 @@
             padding: 12px 25px;
             text-decoration: none;
             font-size: 16px;
+            font-weight: bold;
             border-radius: 10px;
             transition: background-color 0.3s;
         }
@@ -92,6 +110,7 @@
             background-color: #e5941e;
         }
 
+        /* Hero section */
         .hero {
             position: relative;
             height: 50vh;
@@ -109,22 +128,33 @@
             font-size: 48px;
             text-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
             margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
 
         .hero p {
             font-size: 18px;
             max-width: 600px;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s;
         }
 
+        .hero.visible h1,
+        .hero.visible p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Content section */
         .content-section {
             padding: 40px 20px;
-            background: #ffffff;
-            opacity: 1;
-            margin: 20px 0;
-            width: 100%;
-            border-radius: 0;
-            box-shadow: none;
+            background: rgba(255, 255, 255, 0.95);
+            margin: 20px auto;
+            border-radius: 8px;
+            max-width: 1400px;
         }
 
         .content-section h2 {
@@ -132,8 +162,11 @@
             font-size: 36px;
             color: #333;
             margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
         }
 
+        /* Visit info section */
         .visit-info {
             display: flex;
             gap: 40px;
@@ -145,22 +178,50 @@
             height: auto;
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .visit-info.visible img {
+            opacity: 1;
+            transform: translateX(0);
         }
 
         .visit-details {
             width: 50%;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .visit-info.visible .visit-details {
+            opacity: 1;
+            transform: translateX(0);
         }
 
         .visit-details h3 {
             font-family: 'Playfair Display', serif;
             font-size: 24px;
             margin-bottom: 15px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s;
         }
 
         .visit-details p {
             font-size: 16px;
             color: #555;
             margin-bottom: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
+        }
+
+        .visit-info.visible .visit-details h3,
+        .visit-info.visible .visit-details p {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .ticket-prices ul {
@@ -172,6 +233,14 @@
             font-size: 16px;
             color: #333;
             margin-bottom: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease 0.4s, transform 0.6s ease 0.4s;
+        }
+
+        .visit-info.visible .ticket-prices li {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .reserve-btn {
@@ -183,12 +252,21 @@
             border-radius: 6px;
             font-weight: 600;
             transition: background-color 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease 0.5s, transform 0.6s ease 0.5s, background-color 0.3s;
+        }
+
+        .visit-info.visible .reserve-btn {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .reserve-btn:hover {
             background-color: #e5941e;
         }
 
+        /* Map and contact section */
         .map-contact {
             display: flex;
             gap: 40px;
@@ -198,6 +276,14 @@
 
         .map-container {
             width: 50%;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .map-contact.visible .map-container {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .map-container iframe {
@@ -209,18 +295,38 @@
 
         .contact-details {
             width: 50%;
+            opacity: 0;
+            transform: scale(0.8) rotate(-5deg);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .map-contact.visible .contact-details {
+            opacity: 1;
+            transform: scale(1) rotate(0);
         }
 
         .contact-details h3 {
             font-family: 'Playfair Display', serif;
             font-size: 24px;
             margin-bottom: 15px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s;
         }
 
         .contact-details p {
             font-size: 16px;
             color: #555;
             margin-bottom: 15px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
+        }
+
+        .map-contact.visible .contact-details h3,
+        .map-contact.visible .contact-details p {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .contact-details ul {
@@ -232,6 +338,14 @@
             font-size: 16px;
             color: #333;
             margin-bottom: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease 0.4s, transform 0.6s ease 0.4s;
+        }
+
+        .map-contact.visible .contact-details li {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .contact-details li a {
@@ -254,12 +368,21 @@
             font-weight: 600;
             transition: background-color 0.3s;
             margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease 0.5s, transform 0.6s ease 0.5s, background-color 0.3s;
+        }
+
+        .map-contact.visible .open-maps-btn {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .open-maps-btn:hover {
             background-color: #e5941e;
         }
 
+        /* Accessibility and facilities sections */
         .accessibility, .facilities {
             margin-top: 40px;
         }
@@ -270,16 +393,40 @@
             align-items: flex-start;
         }
 
+        .accessibility-info > div, .facilities-info > div {
+            width: 50%;
+            opacity: 0;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .accessibility-info.visible > div:first-child,
+        .facilities-info.visible > div:first-child {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .accessibility-info.visible > div:last-child,
+        .facilities-info.visible > div:last-child {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
         .accessibility-info h3, .facilities-info h3 {
             font-family: 'Playfair Display', serif;
             font-size: 24px;
             margin-bottom: 15px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s;
         }
 
         .accessibility-info p, .facilities-info p {
             font-size: 16px;
             color: #555;
             margin-bottom: 15px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
         }
 
         .accessibility-info ul, .facilities-info ul {
@@ -291,9 +438,22 @@
             font-size: 16px;
             color: #333;
             margin-bottom: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease 0.4s, transform 0.6s ease 0.4s;
         }
 
-        /* Back to Top Button Styling */
+        .accessibility-info.visible h3,
+        .accessibility-info.visible p,
+        .accessibility-info.visible li,
+        .facilities-info.visible h3,
+        .facilities-info.visible p,
+        .facilities-info.visible li {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Back to Top button */
         .back-to-top {
             position: fixed;
             bottom: 30px;
@@ -310,20 +470,22 @@
             text-decoration: none;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s, background-color 0.3s;
+            transform: scale(0);
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s ease, background-color 0.3s;
             z-index: 1000;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
         }
 
         .back-to-top:hover {
             background-color: #e5941e;
         }
 
-        .back-to-top.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Gaya untuk footer */
+        /* Footer styles */
         footer {
             background-color: #000;
             backdrop-filter: blur(5px);
@@ -345,6 +507,11 @@
             text-decoration: none;
             margin: 0 15px;
             position: relative;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #e5941e;
         }
 
         footer a::after {
@@ -363,10 +530,6 @@
             left: 0;
         }
 
-        .footer-nav {
-            margin-bottom: 20px;
-        }
-
         .social-media {
             margin: 20px 0;
         }
@@ -374,10 +537,6 @@
         .social-media a {
             margin: 0 15px;
             display: inline-block;
-        }
-
-        .newsletter {
-            margin-top: 20px;
         }
 
         .newsletter h3 {
@@ -408,13 +567,20 @@
             padding: 12px 25px;
             border: none;
             cursor: pointer;
-            transition: background-color 0.3s;
             border-radius: 6px;
             font-size: 14px;
+            transition: background-color 0.3s;
         }
 
         .newsletter button:hover {
             background-color: #e5941e;
+        }
+
+        /* Responsive design */
+        @media (max-width: 1200px) {
+            .content-section {
+                max-width: 1000px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -422,7 +588,8 @@
                 flex-direction: column;
             }
 
-            .visit-info img, .visit-details, .map-container, .contact-details {
+            .visit-info img, .visit-details, .map-container, .contact-details,
+            .accessibility-info > div, .facilities-info > div {
                 width: 100%;
             }
 
@@ -432,19 +599,40 @@
 
             .hero p {
                 font-size: 16px;
+                max-width: 90%;
             }
 
             .map-container iframe {
                 height: 300px;
             }
 
-            /* Adjust back-to-top button for smaller screens */
             .back-to-top {
                 bottom: 20px;
                 right: 20px;
                 width: 40px;
                 height: 40px;
                 font-size: 20px;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-left, .right-section {
+                width: 100%;
+                justify-content: center;
+                text-align: center;
+            }
+
+            .nav-left nav {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .nav-separator {
+                display: none;
             }
         }
 
@@ -453,11 +641,16 @@
                 font-size: 28px;
             }
 
+            .hero {
+                height: 40vh;
+            }
+
             .content-section h2 {
                 font-size: 28px;
             }
 
-            .visit-details h3, .contact-details h3, .accessibility-info h3, .facilities-info h3 {
+            .visit-details h3, .contact-details h3,
+            .accessibility-info h3, .facilities-info h3 {
                 font-size: 20px;
             }
 
@@ -468,10 +661,16 @@
             .map-container iframe {
                 height: 200px;
             }
+
+            .newsletter form {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Header with navigation -->
     <header>
         <div class="nav-left">
             <nav>
@@ -487,11 +686,13 @@
         </div>
     </header>
 
+    <!-- Hero section -->
     <section class="hero">
         <h1>Kunjungi Museum Basoeki Abdullah</h1>
         <p>Rencanakan kunjungan Anda untuk menjelajahi warisan karya masterpiece Basoeki Abdullah.</p>
     </section>
 
+    <!-- Visit info section -->
     <section class="content-section">
         <h2>Rencanakan Kunjungan Anda</h2>
         <div class="visit-info">
@@ -513,6 +714,7 @@
         </div>
     </section>
 
+    <!-- Map and contact section -->
     <section class="content-section">
         <h2>Lokasi & Kontak</h2>
         <div class="map-contact">
@@ -538,7 +740,8 @@
         </div>
     </section>
 
-    <section class="content-section">
+    <!-- Accessibility section -->
+    <section class="content-section accessibility">
         <h2>Aksesibilitas</h2>
         <div class="accessibility-info">
             <div>
@@ -557,7 +760,8 @@
         </div>
     </section>
 
-    <section class="content-section">
+    <!-- Facilities section -->
+    <section class="content-section facilities">
         <h2>Fasilitas</h2>
         <div class="facilities-info">
             <div>
@@ -581,15 +785,16 @@
         </div>
     </section>
 
-    <!-- Back to Top Button -->
+    <!-- Back to Top button -->
     <a href="#" class="back-to-top" title="Kembali ke Atas">
         <i class="fas fa-arrow-up"></i>
     </a>
 
+    <!-- Footer -->
     <footer>
         <div class="footer-logo">Museum Basoeki Abdullah</div>
         <div class="social-media">
-            <h3>Follow Us</h3>
+            <h3>Ikuti Kami</h3>
             <a href="https://www.instagram.com" target="_blank">Instagram</a>
             <a href="https://www.x.com" target="_blank">Twitter/X</a>
             <a href="https://www.facebook.com" target="_blank">Facebook</a>
@@ -599,32 +804,166 @@
         <div class="newsletter">
             <h3>Newsletter</h3>
             <form>
-                <input type="email" placeholder="Enter your email" required>
-                <button type="submit">Subscribe</button>
+                <input type="email" placeholder="Masukkan email Anda" required>
+                <button type="submit">Berlangganan</button>
             </form>
         </div>
-        <p>© 2025 Museum Basoeki Abdullah. All rights reserved.</p>
+        <p>© 2025 Museum Basoeki Abdullah. Hak cipta dilindungi.</p>
     </footer>
 
-    <!-- Include jQuery from CDN -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- JavaScript for animations -->
     <script>
-        // Handle Back to Top button visibility and click behavior
         $(document).ready(function() {
-            // Show/hide button based on scroll position
+            // Back to Top button visibility and behavior
             $(window).scroll(function() {
-                if ($(this).scrollTop() > 300) { // Show button after scrolling 300px
+                if ($(this).scrollTop() > 300) {
                     $('.back-to-top').addClass('show');
                 } else {
                     $('.back-to-top').removeClass('show');
                 }
             });
 
-            // Smooth scroll to top on button click
             $('.back-to-top').click(function(e) {
-                e.preventDefault(); // Prevent default anchor behavior
-                $('html, body').animate({ scrollTop: 0 }, 600); // Animate scroll to top over 600ms
+                e.preventDefault();
+                $('html, body').animate({ scrollTop: 0 }, 600);
             });
+
+            // Intersection Observer for animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            // Hero section animation
+            const heroObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        $('.hero').addClass('visible');
+                    } else {
+                        $('.hero').removeClass('visible');
+                    }
+                });
+            }, observerOptions);
+
+            const heroSection = document.querySelector('.hero');
+            if (heroSection) heroObserver.observe(heroSection);
+
+            // Visit info section animation
+            const visitInfoObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        $('.visit-info').addClass('visible');
+                        // Stagger ticket prices list items
+                        $('.ticket-prices li').each(function(index) {
+                            $(this).delay(index * 100).queue(function() {
+                                $(this).css({ opacity: 1, transform: 'translateY(0)' }).dequeue();
+                            });
+                        });
+                    } else {
+                        $('.visit-info').removeClass('visible');
+                        $('.ticket-prices li').css({ opacity: 0, transform: 'translateY(20px)' });
+                    }
+                });
+            }, observerOptions);
+
+            const visitInfoSection = document.querySelector('.visit-info');
+            if (visitInfoSection) visitInfoObserver.observe(visitInfoSection);
+
+            // Map and contact section animation
+            const mapContactObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        $('.map-contact').addClass('visible');
+                        // Stagger contact list items
+                        $('.contact-details li').each(function(index) {
+                            $(this).delay(index * 100).queue(function() {
+                                $(this).css({ opacity: 1, transform: 'translateY(0)' }).dequeue();
+                            });
+                        });
+                    } else {
+                        $('.map-contact').removeClass('visible');
+                        $('.contact-details li').css({ opacity: 0, transform: 'translateY(20px)' });
+                    }
+                });
+            }, observerOptions);
+
+            const mapContactSection = document.querySelector('.map-contact');
+            if (mapContactSection) mapContactObserver.observe(mapContactSection);
+
+            // Accessibility section animation
+            const accessibilityObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        $('.accessibility-info').addClass('visible');
+                        $('.accessibility-info > div:first-child').css({
+                            opacity: 1,
+                            transform: 'translateX(0)'
+                        });
+                        $('.accessibility-info > div:last-child').css({
+                            opacity: 1,
+                            transform: 'translateX(0)'
+                        });
+                        // Stagger accessibility list items
+                        $('.accessibility-info li').each(function(index) {
+                            $(this).delay(index * 100).queue(function() {
+                                $(this).css({ opacity: 1, transform: 'translateY(0)' }).dequeue();
+                            });
+                        });
+                    } else {
+                        $('.accessibility-info').removeClass('visible');
+                        $('.accessibility-info > div:first-child').css({
+                            opacity: 0,
+                            transform: 'translateX(-50px)'
+                        });
+                        $('.accessibility-info > div:last-child').css({
+                            opacity: 0,
+                            transform: 'translateX(50px)'
+                        });
+                        $('.accessibility-info li').css({ opacity: 0, transform: 'translateY(20px)' });
+                    }
+                });
+            }, observerOptions);
+
+            const accessibilitySection = document.querySelector('.accessibility-info');
+            if (accessibilitySection) accessibilityObserver.observe(accessibilitySection);
+
+            // Facilities section animation
+            const facilitiesObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        $('.facilities-info').addClass('visible');
+                        $('.facilities-info > div:first-child').css({
+                            opacity: 1,
+                            transform: 'translateX(0)'
+                        });
+                        $('.facilities-info > div:last-child').css({
+                            opacity: 1,
+                            transform: 'translateX(0)'
+                        });
+                        // Stagger facilities list items
+                        $('.facilities-info li').each(function(index) {
+                            $(this).delay(index * 100).queue(function() {
+                                $(this).css({ opacity: 1, transform: 'translateY(0)' }).dequeue();
+                            });
+                        });
+                    } else {
+                        $('.facilities-info').removeClass('visible');
+                        $('.facilities-info > div:first-child').css({
+                            opacity: 0,
+                            transform: 'translateX(-50px)'
+                        });
+                        $('.facilities-info > div:last-child').css({
+                            opacity: 0,
+                            transform: 'translateX(50px)'
+                        });
+                        $('.facilities-info li').css({ opacity: 0, transform: 'translateY(20px)' });
+                    }
+                });
+            }, observerOptions);
+
+            const facilitiesSection = document.querySelector('.facilities-info');
+            if (facilitiesSection) facilitiesObserver.observe(facilitiesSection);
         });
     </script>
 </body>

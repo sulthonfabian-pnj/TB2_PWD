@@ -7,6 +7,13 @@
     <title>Museum Basoeki Abdullah</title>
     <!-- Mengimpor font Playfair Display untuk judul dan Open Sans untuk teks -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Mengimpor jQuery dari CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Mengimpor React dan ReactDOM dari CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <!-- Mengimpor Babel untuk JSX -->
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.24.7/babel.min.js"></script>
     <style>
         /* Mengatur reset margin, padding, dan box-sizing untuk konsistensi */
         * {
@@ -318,6 +325,14 @@
             background-color: #f9f9f9;
             position: relative;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(-50px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .collections .masonry-item.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .collections .masonry-item img {
@@ -398,6 +413,14 @@
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
             max-width: 600px;
             margin: 0 auto;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .interstitial-section .inner.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .fun-fact h3 {
@@ -424,7 +447,7 @@
 
         .event-card {
             flex: 1;
-            background: rgba(255, 255, 255, 1); /* White background with transparency */
+            background: rgba(255, 255, 255, 1);
             backdrop-filter: blur(10px);
             overflow: hidden;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
@@ -432,10 +455,22 @@
             border-radius: 10px;
             min-width: 280px;
             max-width: 650px;
+            opacity: 0;
+            transform: translateX(-100%);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .event-card.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .event-card:nth-child(2) {
+            transition-delay: 0.3s;
         }
 
         .event-card:hover {
-            background-color: #f5a623; /* Yellow background on hover */
+            background-color: #f5a623;
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
         }
@@ -458,29 +493,28 @@
             font-family: 'Playfair Display', serif;
             font-size: 24px;
             margin-bottom: 15px;
-            color: #333; /* Dark text for default state */
+            color: #333;
             transition: color 0.3s;
         }
 
         .event-card p {
             font-size: 16px;
-            color: #555; /* Darker gray for description */
+            color: #555;
             margin-bottom: 15px;
             transition: color 0.3s;
         }
 
         .event-card .date {
             font-size: 16px;
-            color: #000; /* Black for emphasis */
+            color: #000;
             font-weight: bold;
             transition: color 0.3s;
         }
 
-        /* Adjust text colors on hover */
         .event-card:hover h3,
         .event-card:hover p,
         .event-card:hover .date {
-            color: #fff; /* White text for yellow background */
+            color: #fff;
         }
 
         /* Garis pemisah antar section */
@@ -513,12 +547,15 @@
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
             text-align: center;
             padding: 20px;
-            transition: transform 0.3s;
             border-radius: 10px;
+            opacity: 0;
+            transform: scale(0.5) rotate(-15deg);
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
-        .timeline-item:hover {
-            transform: scale(1.1);
+        .timeline-item.visible {
+            opacity: 1;
+            transform: scale(1) rotate(0);
         }
 
         .timeline-item h3 {
@@ -627,18 +664,6 @@
             background-color: #e5941e;
         }
 
-        /* Animasi fade-in untuk section interstitial */
-        .interstitial-section .inner {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .interstitial-section .inner.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
         /* Responsivitas untuk layar kecil */
         @media (max-width: 1200px) {
             .highlights .masonry-container,
@@ -678,7 +703,7 @@
                 max-width: 350px;
             }
             .event-card .event-image {
-                height: 300px; /* Reduce image height for smaller screens */
+                height: 300px;
             }
         }
 
@@ -723,7 +748,7 @@
                 min-width: 100%;
             }
             .event-card .event-image {
-                height: 200px; /* Further reduce for very small screens */
+                height: 200px;
             }
         }
     </style>
@@ -776,56 +801,56 @@
                     <div class="masonry-item">
                         <img src="assets/Kakak dan Adik.webp" alt="Pemandangan Gunung">
                         <div class="overlay">
-                            <h3>Pemandangan Gunung</h3>
+                            <h3>Kakak dan Adik</h3>
                             <p>Lukisan pemandangan gunung yang dramatis</p>
                         </div>
                     </div>
                     <div class="masonry-item">
                         <img src="assets/18.jpg" alt="Pemandangan Gunung">
                         <div class="overlay">
-                            <h3>Pemandangan Gunung</h3>
+                            <h3>Air (Water)</h3>
                             <p>Lukisan pemandangan gunung yang dramatis</p>
                         </div>
                     </div>
                     <div class="masonry-item">
                         <img src="assets/Nyi Roro Kidul.webp" alt="Wanita Bali">
                         <div class="overlay">
-                            <h3>Wanita Bali</h3>
+                            <h3>Nyi Roro Kidul</h3>
                             <p>Lukisan yang menggambarkan keanggunan wanita Bali</p>
                         </div>
                     </div>
                     <div class="masonry-item">
                         <img src="assets/Ibu dan Anak.webp" alt="Potret Diri 1960">
                         <div class="overlay">
-                            <h3>Potret Diri 1960</h3>
+                            <h3>Ibu dan Anak</h3>
                             <p>Potret diri Basoeki Abdullah dari era 1960-an</p>
                         </div>
                     </div>
                     <div class="masonry-item">
                         <img src="assets/22.jpg" alt="Pemandangan Gunung">
                         <div class="overlay">
-                            <h3>Pemandangan Gunung</h3>
+                            <h3>Gede Pangrango <br> (karya Sudjono Abdullah)</h3>
                             <p>Lukisan pemandangan gunung yang dramatis</p>
                         </div>
                     </div>
                     <div class="masonry-item">
                         <img src="assets/Diponegoro.webp" alt="Pantai Flores">
                         <div class="overlay">
-                            <h3>Pantai Flores</h3>
+                            <h3>Diponegoro</h3>
                             <p>Karya pemandangan pantai yang memukau</p>
                         </div>
                     </div>
                     <div class="masonry-item">
                         <img src="assets/Gatotkaca dan Antasena.webp" alt="Pantai Flores">
                         <div class="overlay">
-                            <h3>Pantai Flores</h3>
+                            <h3>Gatotkaca dan Antasena</h3>
                             <p>Karya pemandangan pantai yang memukau</p>
                         </div>
                     </div>
                     <div class="masonry-item">
                         <img src="assets/Rahwana dan Djatayu.webp" alt="Pantai Flores">
                         <div class="overlay">
-                            <h3>Pantai Flores</h3>
+                            <h3>Rahwana dan Djatayu</h3>
                             <p>Karya pemandangan pantai yang memukau</p>
                         </div>
                     </div>
@@ -844,7 +869,7 @@
         </div>
     </div>
 
-    <!-- Bagian Exhibitions -->
+    <!-- Bagian Exhibitions (dirender oleh React) -->
     <div class="content-section">
         <div class="inner">
             <section class="exhibitions">
@@ -852,24 +877,7 @@
                     <h2>Exhibitions & Events</h2>
                     <a href="#" class="see-all-link">Lihat Semua...</a>
                 </div>
-                <div class="events-container">
-                    <div class="event-card">
-                        <div class="event-info">
-                            <h3>Menyongsong Hari Esok</h3>
-                            <p>Refleksi Krisis Iklim Melalui Karya Seni</p>
-                            <p class="date">📅 13 October - 30 November 2023</p>
-                        </div>
-                        <img src="assets/cal-1.jpeg" alt="Pameran Menyongsong Hari Esok" class="event-image">
-                    </div>
-                    <div class="event-card">
-                        <div class="event-info">
-                            <h3>Bayang-Bayang Basoeki Abdullah</h3>
-                            <p>Pameran karya talenta muda</p>
-                            <p class="date">📅 18 May - 08 June 2021</p>
-                        </div>
-                        <img src="assets/cal-2.jpeg" alt="Pameran Bayang-Bayang Basoeki Abdullah" class="event-image">
-                    </div>
-                </div>
+                <div id="events-container" class="events-container"></div>
             </section>
         </div>
     </div>
@@ -1007,21 +1015,143 @@
         <p>© 2025 Museum Basoeki Abdullah. All rights reserved.</p>
     </footer>
 
-    <!-- JavaScript untuk animasi fade-in pada section interstitial -->
-    <script>
-        function checkFadeIn() {
-            const fadeElements = document.querySelectorAll('.interstitial-section .inner');
-            fadeElements.forEach(element => {
-                const rect = element.getBoundingClientRect();
-                const windowHeight = window.innerHeight;
-                if (rect.top < windowHeight * 0.75) {
-                    element.classList.add('visible');
+    <!-- JavaScript untuk animasi dan React -->
+    <script type="text/babel">
+        // Define React components
+        const ExhibitionCard = ({ title, description, date, imageSrc, alt }) => {
+            return (
+                <div className="event-card">
+                    <div className="event-info">
+                        <h3>{title}</h3>
+                        <p>{description}</p>
+                        <p className="date">{date}</p>
+                    </div>
+                    <img src={imageSrc} alt={alt} className="event-image" />
+                </div>
+            );
+        };
+
+        const Exhibitions = () => {
+            const events = [
+                {
+                    title: "Menyongsong Hari Esok",
+                    description: "Refleksi Krisis Iklim Melalui Karya Seni",
+                    date: "📅 13 October - 30 November 2023",
+                    imageSrc: "assets/cal-1.jpeg",
+                    alt: "Pameran Menyongsong Hari Esok"
+                },
+                {
+                    title: "Bayang-Bayang Basoeki Abdullah",
+                    description: "Pameran karya talenta muda",
+                    date: "📅 18 May - 08 June 2021",
+                    imageSrc: "assets/cal-2.jpeg",
+                    alt: "Pameran Bayang-Bayang Basoeki Abdullah"
                 }
-            });
+            ];
+
+            return (
+                <div className="events-container">
+                    {events.map((event, index) => (
+                        <ExhibitionCard
+                            key={index}
+                            title={event.title}
+                            description={event.description}
+                            date={event.date}
+                            imageSrc={event.imageSrc}
+                            alt={event.alt}
+                        />
+                    ))}
+                </div>
+            );
+        };
+
+        // Render the Exhibitions component
+        const rootElement = document.getElementById('events-container');
+        if (rootElement) {
+            const root = ReactDOM.createRoot(rootElement);
+            root.render(<Exhibitions />);
         }
 
-        window.addEventListener('scroll', checkFadeIn);
-        window.addEventListener('load', checkFadeIn);
+        // jQuery untuk animasi fade-in dan Intersection Observer
+        $(document).ready(function() {
+            // Animasi fade-in untuk interstitial
+            function checkFadeIn() {
+                const fadeElements = document.querySelectorAll('.interstitial-section .inner');
+                fadeElements.forEach(element => {
+                    const rect = element.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+                    if (rect.top < windowHeight * 0.75) {
+                        element.classList.add('visible');
+                    } else {
+                        element.classList.remove('visible');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', checkFadeIn);
+            window.addEventListener('load', checkFadeIn);
+
+            // Intersection Observer untuk animasi Exhibitions, Collections, dan Timeline
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            // Exhibitions Animation
+            const exhibitionsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        $('.event-card').each(function(index) {
+                            $(this).delay(index * 300).queue(function() {
+                                $(this).addClass('visible').dequeue();
+                            });
+                        });
+                    } else {
+                        $('.event-card').removeClass('visible');
+                    }
+                });
+            }, observerOptions);
+
+            const exhibitionsSection = document.querySelector('.exhibitions');
+            if (exhibitionsSection) exhibitionsObserver.observe(exhibitionsSection);
+
+            // Collections Animation
+            const collectionsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        $('.collections .masonry-item').each(function(index) {
+                            $(this).delay(index * 100).queue(function() {
+                                $(this).addClass('visible').dequeue();
+                            });
+                        });
+                    } else {
+                        $('.collections .masonry-item').removeClass('visible');
+                    }
+                });
+            }, observerOptions);
+
+            const collectionsSection = document.querySelector('.collections');
+            if (collectionsSection) collectionsObserver.observe(collectionsSection);
+
+            // Timeline Animation
+            const timelineObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        $('.timeline-item').each(function(index) {
+                            $(this).delay(index * 200).queue(function() {
+                                $(this).addClass('visible').dequeue();
+                            });
+                        });
+                    } else {
+                        $('.timeline-item').removeClass('visible');
+                    }
+                });
+            }, observerOptions);
+
+            const timelineSection = document.querySelector('.timeline');
+            if (timelineSection) timelineObserver.observe(timelineSection);
+        });
     </script>
 </body>
 </html>

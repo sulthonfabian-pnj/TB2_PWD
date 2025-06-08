@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <!-- Character encoding and responsive viewport -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pameran & Acara - Museum Basoeki Abdullah</title>
+    <!-- Fonts: Playfair Display for headings, Open Sans for text -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Include Font Awesome for the arrow icon -->
+    <!-- Font Awesome for back-to-top arrow icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- jQuery, React, ReactDOM, and Babel for JSX -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.24.7/babel.min.js"></script>
     <style>
+        /* Reset and base styles */
         * {
             margin: 0;
             padding: 0;
@@ -20,8 +28,10 @@
             line-height: 1.6;
             background: url('https://i0.wp.com/direktorionlinemuseumdiindonesia.wordpress.com/wp-content/uploads/2017/05/mus-basuk-abdullah.jpg?w=2100&h=&ssl=1') no-repeat fixed center/cover;
             background-attachment: fixed;
+            overflow-x: hidden;
         }
 
+        /* Header styles */
         header {
             background-color: #000;
             padding: 20px 30px;
@@ -33,6 +43,11 @@
             z-index: 100;
         }
 
+        .nav-left {
+            display: flex;
+            align-items: center;
+        }
+
         .nav-left nav a {
             color: #fff;
             text-decoration: none;
@@ -41,6 +56,10 @@
             margin: 0 15px;
             position: relative;
             transition: color 0.3s;
+        }
+
+        .nav-left nav a:first-child {
+            margin-left: 0;
         }
 
         .nav-left nav a:hover {
@@ -85,8 +104,8 @@
             padding: 12px 25px;
             text-decoration: none;
             font-size: 16px;
-            border-radius: 10px;
             font-weight: bold;
+            border-radius: 10px;
             transition: background-color 0.3s;
         }
 
@@ -94,6 +113,7 @@
             background-color: #e5941e;
         }
 
+        /* Hero section */
         .hero {
             position: relative;
             height: 50vh;
@@ -119,14 +139,15 @@
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
 
+        /* Content section */
         .content-section {
             padding: 40px 20px;
-            background: #ffffff;
-            opacity: 1;
+            background: rgba(255, 255, 255, 0.95);
             margin: 20px 0;
-            width: 100%;
-            border-radius: 0;
-            box-shadow: none;
+            border-radius: 8px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .content-section h2 {
@@ -138,20 +159,29 @@
             text-transform: uppercase;
         }
 
+        /* Events container */
         .events-container {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
             max-width: 1400px;
             margin: 0 auto;
         }
 
         .event-card {
-            background: #ffffff;
+            background: #fff;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             transition: transform 0.3s, background-color 0.3s;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .event-card.visible {
+            opacity: 1;
+            transform: translateX(0);
         }
 
         .event-card:hover {
@@ -159,13 +189,21 @@
             background-color: #f5a623;
         }
 
+        .event-card .image-wrapper {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f9f9f9;
+        }
+
         .event-card img {
             width: 100%;
-            height: 450px;
-            object-fit: cover;
+            max-height: 250px;
+            object-fit: contain;
             display: block;
-            border-top-left-radius: 12px;
-            border-top-right-radius: 12px;
         }
 
         .event-card .event-info {
@@ -177,13 +215,13 @@
             font-family: 'Playfair Display', serif;
             font-size: 24px;
             margin-bottom: 10px;
-            color: #333333;
+            color: #333;
             transition: color 0.3s;
         }
 
         .event-card p {
             font-size: 16px;
-            color: #555555;
+            color: #555;
             margin-bottom: 15px;
             transition: color 0.3s;
         }
@@ -205,10 +243,10 @@
 
         .event-card:hover h3,
         .event-card:hover p {
-            color: #ffffff;
+            color: #fff;
         }
 
-        /* Back to Top Button Styling */
+        /* Back to Top button */
         .back-to-top {
             position: fixed;
             bottom: 30px;
@@ -238,6 +276,7 @@
             visibility: visible;
         }
 
+        /* Footer styles */
         footer {
             background-color: #000;
             color: #fff;
@@ -250,10 +289,6 @@
             font-family: 'Playfair Display', serif;
             font-size: 24px;
             font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        footer .footer-nav {
             margin-bottom: 20px;
         }
 
@@ -331,6 +366,13 @@
             background-color: #e5941e;
         }
 
+        /* Responsive design */
+        @media (max-width: 1200px) {
+            .events-container {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 36px;
@@ -338,14 +380,15 @@
 
             .hero p {
                 font-size: 16px;
+                max-width: 90%;
             }
 
             .events-container {
                 grid-template-columns: 1fr;
             }
 
-            .event-card img {
-                height: 250px;
+            .event-card .image-wrapper {
+                height: 200px;
             }
 
             header {
@@ -356,9 +399,19 @@
             .nav-left, .right-section {
                 width: 100%;
                 justify-content: center;
+                text-align: center;
             }
 
-            /* Adjust back-to-top button for smaller screens */
+            .nav-left nav {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .nav-separator {
+                display: none;
+            }
+
             .back-to-top {
                 bottom: 20px;
                 right: 20px;
@@ -373,20 +426,20 @@
                 font-size: 28px;
             }
 
+            .hero {
+                height: 40vh;
+            }
+
             .content-section h2 {
                 font-size: 28px;
             }
 
-            .event-card img {
-                height: 200px;
+            .event-card .image-wrapper {
+                height: 150px;
             }
 
             .nav-left nav a {
-                margin: 0 10px;
-            }
-
-            .nav-separator {
-                display: none;
+                margin: 5px 0;
             }
 
             .newsletter form {
@@ -397,13 +450,14 @@
     </style>
 </head>
 <body>
+    <!-- Header with navigation -->
     <header>
         <div class="nav-left">
             <nav>
                 <a href="index.html">Beranda</a><span class="nav-separator">|</span>
                 <a href="visit.html">Kunjungi</a><span class="nav-separator">|</span>
                 <a href="exhibitions.html">Pameran & Acara</a><span class="nav-separator">|</span>
-                <a href="#">Jelajahi</a>
+                <a href="Koleksi.html">Jelajahi</a>
             </nav>
         </div>
         <div class="right-section">
@@ -412,70 +466,24 @@
         </div>
     </header>
 
+    <!-- Hero section -->
     <section class="hero">
         <h1>Pameran & Acara</h1>
         <p>Temukan pameran seni menarik dan acara budaya di Museum Basoeki Abdullah.</p>
     </section>
 
+    <!-- Events section (rendered by React) -->
     <section class="content-section">
         <h2>Pameran & Acara Terkini</h2>
-        <div class="events-container">
-            <div class="event-card">
-                <img src="assets/cal-1.jpeg" alt="Pameran Menyongsong Hari Esok">
-                <div class="event-info">
-                    <h3>Menyongsong Hari Esok</h3>
-                    <p>Refleksi krisis iklim melalui karya seni kontemporer yang menggugah.</p>
-                    <a href="#" class="book-online">Pesan Online</a>
-                </div>
-            </div>
-            <div class="event-card">
-                <img src="assets/cal-2.jpeg" alt="Pameran Bayang-Bayang Basoeki Abdullah">
-                <div class="event-info">
-                    <h3>Bayang-Bayang Basoeki Abdullah</h3>
-                    <p>Pameran karya talenta muda yang terinspirasi oleh warisan Basoeki Abdullah.</p>
-                    <a href="#" class="book-online">Pesan Online</a>
-                </div>
-            </div>
-            <div class="event-card">
-                <img src="assets/cal-3.png" alt="Pameran Membangun Harmoni">
-                <div class="event-info">
-                    <h3>Membangun Harmoni</h3>
-                    <p>Perjalanan visual melalui kekayaan budaya Indonesia dalam seni rupa.</p>
-                    <a href="#" class="book-online">Pesan Online</a>
-                </div>
-            </div>
-            <div class="event-card">
-                <img src="assets/cal-4.png" alt="Pameran Bersama">
-                <div class="event-info">
-                    <h3>Bersama</h3>
-                    <p>Kegiatan kreatif untuk anak-anak belajar melukis dengan gaya Basoeki Abdullah.</p>
-                    <a href="#" class="book-online">Pesan Online</a>
-                </div>
-            </div>
-            <div class="event-card">
-                <img src="assets/cal-5.jpg" alt="Pameran Semesta Perempuan">
-                <div class="event-info">
-                    <h3>Semesta Perempuan</h3>
-                    <p>Eksplorasi karya seni realisme dari seniman Indonesia terkemuka.</p>
-                    <a href="#" class="book-online">Pesan Online</a>
-                </div>
-            </div>
-            <div class="event-card">
-                <img src="assets/cal-6.png" alt="Pameran Ideolog">
-                <div class="event-info">
-                    <h3>Ideolog <br> Kini, Tokoh, dan Bangsa</h3>
-                    <p>Eksplorasi karya seni realisme dari seniman Indonesia terkemuka.</p>
-                    <a href="#" class="book-online">Pesan Online</a>
-                </div>
-            </div>
-        </div>
+        <div id="events-container" class="events-container"></div>
     </section>
 
-    <!-- Back to Top Button -->
+    <!-- Back to Top button -->
     <a href="#" class="back-to-top" title="Kembali ke Atas">
         <i class="fas fa-arrow-up"></i>
     </a>
 
+    <!-- Footer -->
     <footer>
         <div class="footer-logo">Museum Basoeki Abdullah</div>
         <div class="social-media">
@@ -496,25 +504,126 @@
         <p>© 2025 Museum Basoeki Abdullah. Hak cipta dilindungi.</p>
     </footer>
 
-    <!-- Include jQuery from CDN -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        // Handle Back to Top button visibility and click behavior
+    <!-- JavaScript for animations and React -->
+    <script type="text/babel">
+        // React component for event card
+        const EventCard = ({ title, description, imageSrc, alt }) => {
+            return (
+                <div className="event-card">
+                    <div className="image-wrapper">
+                        <img src={imageSrc} alt={alt} />
+                    </div>
+                    <div className="event-info">
+                        <h3>{title}</h3>
+                        <p>{description}</p>
+                        <a href="#" className="book-online">Pesan Online</a>
+                    </div>
+                </div>
+            );
+        };
+
+        // React component for events section
+        const Events = () => {
+            const events = [
+                {
+                    title: "Menyongsong Hari Esok",
+                    description: "Refleksi krisis iklim melalui karya seni kontemporer yang menggugah.",
+                    imageSrc: "assets/cal-1.jpeg",
+                    alt: "Pameran Menyongsong Hari Esok"
+                },
+                {
+                    title: "Bayang-Bayang Basoeki Abdullah",
+                    description: "Pameran karya talenta muda yang terinspirasi oleh warisan Basoeki Abdullah.",
+                    imageSrc: "assets/cal-2.jpeg",
+                    alt: "Pameran Bayang-Bayang Basoeki Abdullah"
+                },
+                {
+                    title: "Membangun Harmoni",
+                    description: "Perjalanan visual melalui kekayaan budaya Indonesia dalam seni rupa.",
+                    imageSrc: "assets/cal-3.png",
+                    alt: "Pameran Membangun Harmoni"
+                },
+                {
+                    title: "Bersama",
+                    description: "Kegiatan kreatif untuk anak-anak belajar melukis dengan gaya Basoeki Abdullah.",
+                    imageSrc: "assets/cal-4.png",
+                    alt: "Pameran Bersama"
+                },
+                {
+                    title: "Semesta Perempuan",
+                    description: "Eksplorasi karya seni realisme dari seniman Indonesia terkemuka.",
+                    imageSrc: "assets/cal-5.jpg",
+                    alt: "Pameran Semesta Perempuan"
+                },
+                {
+                    title: "Ideolog Kini, Tokoh, dan Bangsa",
+                    description: "Eksplorasi karya seni realisme dari seniman Indonesia terkemuka.",
+                    imageSrc: "assets/cal-6.png",
+                    alt: "Pameran Ideolog"
+                }
+            ];
+
+            return (
+                <div className="events-container">
+                    {events.map((event, index) => (
+                        <EventCard
+                            key={index}
+                            title={event.title}
+                            description={event.description}
+                            imageSrc={event.imageSrc}
+                            alt={event.alt}
+                        />
+                    ))}
+                </div>
+            );
+        };
+
+        // Render the Events component
+        const rootElement = document.getElementById('events-container');
+        if (rootElement) {
+            const root = ReactDOM.createRoot(rootElement);
+            root.render(<Events />);
+        }
+
+        // jQuery for animations and Back to Top button
         $(document).ready(function() {
-            // Show/hide button based on scroll position
+            // Back to Top button visibility and behavior
             $(window).scroll(function() {
-                if ($(this).scrollTop() > 300) { // Show button after scrolling 300px
+                if ($(this).scrollTop() > 300) {
                     $('.back-to-top').addClass('show');
                 } else {
                     $('.back-to-top').removeClass('show');
                 }
             });
 
-            // Smooth scroll to top on button click
             $('.back-to-top').click(function(e) {
-                e.preventDefault(); // Prevent default anchor behavior
-                $('html, body').animate({ scrollTop: 0 }, 600); // Animate scroll to top over 600ms
+                e.preventDefault();
+                $('html, body').animate({ scrollTop: 0 }, 600);
             });
+
+            // Intersection Observer for event card animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const eventsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        $('.event-card').each(function(index) {
+                            $(this).delay(index * 100).queue(function() {
+                                $(this).addClass('visible').dequeue();
+                            });
+                        });
+                    } else {
+                        $('.event-card').removeClass('visible');
+                    }
+                });
+            }, observerOptions);
+
+            const eventsSection = document.querySelector('.content-section');
+            if (eventsSection) eventsObserver.observe(eventsSection);
         });
     </script>
 </body>
