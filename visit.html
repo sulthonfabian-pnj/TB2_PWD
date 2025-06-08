@@ -38,6 +38,11 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        header.hidden {
+            transform: translateY(-100%);
         }
 
         .nav-left {
@@ -675,14 +680,10 @@
         <div class="nav-left">
             <nav>
                 <a href="index.html">Beranda</a><span class="nav-separator">|</span>
-                <a href="visit.html">Kunjungi</a><span class="nav-separator">|</span>
+                <a href="visit.html">Kunjungi Museum</a><span class="nav-separator">|</span>
                 <a href="exhibitions.html">Pameran & Acara</a><span class="nav-separator">|</span>
-                <a href="Koleksi.html">Jelajahi</a>
+                <a href="collections.html">Jelajahi</a>
             </nav>
-        </div>
-        <div class="right-section">
-            <span class="operating-hours">Buka Hari Ini: 08:00 → 16:00</span>
-            <a href="#" class="tickets-btn">Tiket</a>
         </div>
     </header>
 
@@ -690,6 +691,7 @@
     <section class="hero">
         <h1>Kunjungi Museum Basoeki Abdullah</h1>
         <p>Rencanakan kunjungan Anda untuk menjelajahi warisan karya masterpiece Basoeki Abdullah.</p>
+        <p>Museum ini menawarkan pengalaman mendalam untuk mengapresiasi seni lukis Indonesia melalui karya-karya Basoeki Abdullah yang legendaris.</p>
     </section>
 
     <!-- Visit info section -->
@@ -745,17 +747,20 @@
         <h2>Aksesibilitas</h2>
         <div class="accessibility-info">
             <div>
-                <h3>Komitmen Kami</h3>
-                <p>Kami berupaya menjadikan Museum Basoeki Abdullah dapat diakses oleh semua pengunjung.</p>
+                <h3>Fasilitas untuk Penyandang Disabilitas</h3>
+                <ul>
+                    <li>Ramp untuk kursi roda di semua area utama</li>
+                    <li>Pintu masuk yang lebar untuk akses mudah</li>
+                    <li>Papan petunjuk dengan huruf besar dan braille</li>
+                </ul>
             </div>
             <div>
-                <h3>Fitur Aksesibilitas</h3>
+                <h3>Layanan Khusus</h3>
                 <ul>
-                    <li>Jalur bagi penyandang disabilitas</li>
-                    <li>Kursi roda tersedia berdasarkan permintaan</li>
-                    <li>Informasi dalam huruf Braille tersedia di setiap ruangan</li>
+                    <li>Tur audio untuk pengunjung tunanetra</li>
+                    <li>Pemandu untuk kelompok dengan kebutuhan khusus</li>
+                    <li>Area istirahat yang nyaman dan mudah diakses</li>
                 </ul>
-                <p>Jika Anda memiliki pertanyaan, komentar, atau saran, silakan hubungi kami melalui <a href="https://wa.me/6281234567890" target="_blank">WhatsApp</a> atau <a href="mailto:basoeki.abdullah@gmail.com">Email</a>.</p>
             </div>
         </div>
     </section>
@@ -765,22 +770,20 @@
         <h2>Fasilitas</h2>
         <div class="facilities-info">
             <div>
-                <h3>Jadilah Bagian dari Pengalaman Kami</h3>
-                <p>Kami mengundang Anda untuk menjadi bagian dari Museum Basoeki Abdullah, untuk merasakan keindahan karya lukisan dan warisan Basoeki Abdullah.</p>
+                <h3>Fasilitas Umum</h3>
+                <ul>
+                    <li>Area parkir luas untuk kendaraan pribadi</li>
+                    <li>Toilet bersih dan terawat</li>
+                    <li>Kantin dengan pilihan makanan ringan dan minuman</li>
+                </ul>
             </div>
             <div>
-                <h3>Fasilitas yang Tersedia</h3>
+                <h3>Fasilitas Pendukung</h3>
                 <ul>
-                    <li>Lift</li>
-                    <li>Musala</li>
-                    <li>Ruang Laktasi/ASI</li>
-                    <li>Toilet</li>
-                    <li>Ruang Auditorium, Seminar & Workshop</li>
-                    <li>Ruang Audio Visual</li>
-                    <li>Perpustakaan</li>
-                    <li>Parkir Mobil/Motor</li>
+                    <li>Toko suvenir dengan koleksi barang seni</li>
+                    <li>Ruang pameran interaktif untuk anak-anak</li>
+                    <li>Wi-Fi gratis di area tertentu</li>
                 </ul>
-                <p>Untuk pertanyaan umum dan pertanyaan tentang aksesibilitas/fasilitas, silakan kirim email kepada kami di <a href="mailto:basoeki.abdullah@gmail.com">basoeki.abdullah@gmail.com</a>.</p>
             </div>
         </div>
     </section>
@@ -794,7 +797,7 @@
     <footer>
         <div class="footer-logo">Museum Basoeki Abdullah</div>
         <div class="social-media">
-            <h3>Ikuti Kami</h3>
+            <h3>Follow Us</h3>
             <a href="https://www.instagram.com" target="_blank">Instagram</a>
             <a href="https://www.x.com" target="_blank">Twitter/X</a>
             <a href="https://www.facebook.com" target="_blank">Facebook</a>
@@ -804,19 +807,31 @@
         <div class="newsletter">
             <h3>Newsletter</h3>
             <form>
-                <input type="email" placeholder="Masukkan email Anda" required>
-                <button type="submit">Berlangganan</button>
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit">Subscribe</button>
             </form>
         </div>
-        <p>© 2025 Museum Basoeki Abdullah. Hak cipta dilindungi.</p>
+        <p>© 2025 Museum Basoeki Abdullah. All rights reserved.</p>
     </footer>
 
-    <!-- JavaScript for animations -->
+    <!-- JavaScript for animations and navigation -->
     <script>
         $(document).ready(function() {
-            // Back to Top button visibility and behavior
+            // Navigation bar: hide on scroll down, show on scroll up
+            let lastScrollTop = 0;
             $(window).scroll(function() {
-                if ($(this).scrollTop() > 300) {
+                let currentScrollTop = $(this).scrollTop();
+                if (currentScrollTop > lastScrollTop) {
+                    // Scroll down
+                    $('header').addClass('hidden');
+                } else {
+                    // Scroll up
+                    $('header').removeClass('hidden');
+                }
+                lastScrollTop = currentScrollTop;
+
+                // Back to Top button visibility
+                if (currentScrollTop > 300) {
                     $('.back-to-top').addClass('show');
                 } else {
                     $('.back-to-top').removeClass('show');
@@ -835,7 +850,7 @@
                 threshold: 0.1
             };
 
-            // Hero section animation
+            // Hero animation
             const heroObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -849,41 +864,27 @@
             const heroSection = document.querySelector('.hero');
             if (heroSection) heroObserver.observe(heroSection);
 
-            // Visit info section animation
-            const visitInfoObserver = new IntersectionObserver((entries) => {
+            // Visit info animation
+            const visitObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         $('.visit-info').addClass('visible');
-                        // Stagger ticket prices list items
-                        $('.ticket-prices li').each(function(index) {
-                            $(this).delay(index * 100).queue(function() {
-                                $(this).css({ opacity: 1, transform: 'translateY(0)' }).dequeue();
-                            });
-                        });
                     } else {
                         $('.visit-info').removeClass('visible');
-                        $('.ticket-prices li').css({ opacity: 0, transform: 'translateY(20px)' });
                     }
                 });
             }, observerOptions);
 
-            const visitInfoSection = document.querySelector('.visit-info');
-            if (visitInfoSection) visitInfoObserver.observe(visitInfoSection);
+            const visitSection = document.querySelector('.visit-info');
+            if (visitSection) visitObserver.observe(visitSection);
 
-            // Map and contact section animation
+            // Map and contact animation
             const mapContactObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         $('.map-contact').addClass('visible');
-                        // Stagger contact list items
-                        $('.contact-details li').each(function(index) {
-                            $(this).delay(index * 100).queue(function() {
-                                $(this).css({ opacity: 1, transform: 'translateY(0)' }).dequeue();
-                            });
-                        });
                     } else {
                         $('.map-contact').removeClass('visible');
-                        $('.contact-details li').css({ opacity: 0, transform: 'translateY(20px)' });
                     }
                 });
             }, observerOptions);
@@ -891,36 +892,13 @@
             const mapContactSection = document.querySelector('.map-contact');
             if (mapContactSection) mapContactObserver.observe(mapContactSection);
 
-            // Accessibility section animation
+            // Accessibility animation
             const accessibilityObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         $('.accessibility-info').addClass('visible');
-                        $('.accessibility-info > div:first-child').css({
-                            opacity: 1,
-                            transform: 'translateX(0)'
-                        });
-                        $('.accessibility-info > div:last-child').css({
-                            opacity: 1,
-                            transform: 'translateX(0)'
-                        });
-                        // Stagger accessibility list items
-                        $('.accessibility-info li').each(function(index) {
-                            $(this).delay(index * 100).queue(function() {
-                                $(this).css({ opacity: 1, transform: 'translateY(0)' }).dequeue();
-                            });
-                        });
                     } else {
                         $('.accessibility-info').removeClass('visible');
-                        $('.accessibility-info > div:first-child').css({
-                            opacity: 0,
-                            transform: 'translateX(-50px)'
-                        });
-                        $('.accessibility-info > div:last-child').css({
-                            opacity: 0,
-                            transform: 'translateX(50px)'
-                        });
-                        $('.accessibility-info li').css({ opacity: 0, transform: 'translateY(20px)' });
                     }
                 });
             }, observerOptions);
@@ -928,36 +906,13 @@
             const accessibilitySection = document.querySelector('.accessibility-info');
             if (accessibilitySection) accessibilityObserver.observe(accessibilitySection);
 
-            // Facilities section animation
+            // Facilities animation
             const facilitiesObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         $('.facilities-info').addClass('visible');
-                        $('.facilities-info > div:first-child').css({
-                            opacity: 1,
-                            transform: 'translateX(0)'
-                        });
-                        $('.facilities-info > div:last-child').css({
-                            opacity: 1,
-                            transform: 'translateX(0)'
-                        });
-                        // Stagger facilities list items
-                        $('.facilities-info li').each(function(index) {
-                            $(this).delay(index * 100).queue(function() {
-                                $(this).css({ opacity: 1, transform: 'translateY(0)' }).dequeue();
-                            });
-                        });
                     } else {
                         $('.facilities-info').removeClass('visible');
-                        $('.facilities-info > div:first-child').css({
-                            opacity: 0,
-                            transform: 'translateX(-50px)'
-                        });
-                        $('.facilities-info > div:last-child').css({
-                            opacity: 0,
-                            transform: 'translateX(50px)'
-                        });
-                        $('.facilities-info li').css({ opacity: 0, transform: 'translateY(20px)' });
                     }
                 });
             }, observerOptions);

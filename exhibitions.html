@@ -41,6 +41,11 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        header.hidden {
+            transform: translateY(-100%);
         }
 
         .nav-left {
@@ -455,14 +460,14 @@
         <div class="nav-left">
             <nav>
                 <a href="index.html">Beranda</a><span class="nav-separator">|</span>
-                <a href="visit.html">Kunjungi</a><span class="nav-separator">|</span>
+                <a href="visit.html">Kunjungi Museum</a><span class="nav-separator">|</span>
                 <a href="exhibitions.html">Pameran & Acara</a><span class="nav-separator">|</span>
-                <a href="Koleksi.html">Jelajahi</a>
+                <a href="collections.html">Jelajahi Koleksi</a>
             </nav>
         </div>
         <div class="right-section">
             <span class="operating-hours">Buka Hari Ini: 08:00 → 16:00</span>
-            <a href="#" class="tickets-btn">Tiket</a>
+            <a href="https://www.traveloka.com" class="tickets-btn">Tiket</a>
         </div>
     </header>
 
@@ -587,9 +592,21 @@
 
         // jQuery for animations and Back to Top button
         $(document).ready(function() {
-            // Back to Top button visibility and behavior
+            // Navigation bar: hide on scroll down, show on scroll up
+            let lastScrollTop = 0;
             $(window).scroll(function() {
-                if ($(this).scrollTop() > 300) {
+                let currentScrollTop = $(this).scrollTop();
+                if (currentScrollTop > lastScrollTop) {
+                    // Scroll down
+                    $('header').addClass('hidden');
+                } else {
+                    // Scroll up
+                    $('header').removeClass('hidden');
+                }
+                lastScrollTop = currentScrollTop;
+
+                // Back to Top button visibility
+                if (currentScrollTop > 300) {
                     $('.back-to-top').addClass('show');
                 } else {
                     $('.back-to-top').removeClass('show');

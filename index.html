@@ -7,6 +7,8 @@
     <title>Museum Basoeki Abdullah</title>
     <!-- Mengimpor font Playfair Display untuk judul dan Open Sans untuk teks -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for back-to-top arrow icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Mengimpor jQuery dari CDN -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- Mengimpor React dan ReactDOM dari CDN -->
@@ -42,6 +44,11 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        header.hidden {
+            transform: translateY(-100%);
         }
 
         .nav-left {
@@ -570,6 +577,38 @@
             color: #fff;
         }
 
+        /* Back to Top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #f5a623;
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0);
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s ease, background-color 0.3s;
+            z-index: 1000;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .back-to-top:hover {
+            background-color: #e5941e;
+        }
+
         /* Gaya untuk footer */
         footer {
             background-color: #000;
@@ -678,6 +717,13 @@
                 max-width: 600px;
                 column-count: 2;
             }
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
             header {
                 flex-direction: column;
                 gap: 15px;
@@ -758,15 +804,15 @@
     <header>
         <div class="nav-left">
             <nav>
-                <a href="index.html">BERANDA</a><span class="nav-separator">|</span>
-                <a href="visit.html">KUNJUNGI</a><span class="nav-separator">|</span>
-                <a href="exhibitions.html">PAMERAN & ACARA</a><span class="nav-separator">|</span>
-                <a href="Koleksi.html">Jelajahi</a>
+                <a href="index.html">Beranda</a><span class="nav-separator">|</span>
+                <a href="visit.html">Kunjungi Museum</a><span class="nav-separator">|</span>
+                <a href="exhibitions.html">Pameran & Acara</a><span class="nav-separator">|</span>
+                <a href="collections.html">Jelajahi Koleksi</a>
             </nav>
         </div>
         <div class="right-section">
             <span class="operating-hours">Buka Hari Ini: 8:00 → 16:00</span>
-            <a href="#" class="tickets-btn">Tiket</a>
+            <a href="https://www.traveloka.com" class="tickets-btn">Tiket</a>
         </div>
     </header>
 
@@ -788,70 +834,69 @@
             <section class="highlights">
                 <div class="section-header">
                     <h2>HIGHLIGHTS</h2>
-                    <a href="#" class="see-all-link">Lihat Semua...</a>
                 </div>
                 <div class="masonry-container">
                     <div class="masonry-item">
                         <img src="assets/Soekarno.webp" alt="Potret Soekarno">
                         <div class="overlay">
                             <h3>Potret Soekarno</h3>
-                            <p>Potret ikonik Presiden Soekarno, pemrakarsa Gerakan Non-Blok</p>
+                            <p>Potret ikonik Presiden Soekarno, pemrakarsa Gerakan Non-Blok. Dilukis dengan detail realistis, karya ini menangkap karisma dan visi Soekarno sebagai pemimpin bangsa.</p>
                         </div>
                     </div>
                     <div class="masonry-item">
-                        <img src="assets/Kakak dan Adik.webp" alt="Pemandangan Gunung">
+                        <img src="assets/Kakak dan Adik.webp" alt="Kakak dan Adik">
                         <div class="overlay">
                             <h3>Kakak dan Adik</h3>
-                            <p>Lukisan pemandangan gunung yang dramatis</p>
+                            <p>Lukisan yang menggambarkan kehangatan hubungan keluarga. Karya ini menonjolkan kemampuan Basoeki dalam menangkap emosi manusia dengan sapuan kuas yang lembut.</p>
                         </div>
                     </div>
                     <div class="masonry-item">
-                        <img src="assets/18.jpg" alt="Pemandangan Gunung">
+                        <img src="assets/21.jpg" alt="Potret Diri Basoeki Abdullah">
                         <div class="overlay">
-                            <h3>Air (Water)</h3>
-                            <p>Lukisan pemandangan gunung yang dramatis</p>
+                            <h3>Potret Diri Basoeki Abdullah</h3>
+                            <p>Ekspresi pribadi sang seniman melalui potret dirinya. Lukisan ini mencerminkan introspeksi dan kepekaan estetika Basoeki terhadap dirinya sendiri.</p>
                         </div>
                     </div>
                     <div class="masonry-item">
-                        <img src="assets/Nyi Roro Kidul.webp" alt="Wanita Bali">
+                        <img src="assets/Nyi Roro Kidul.webp" alt="Nyi Roro Kidul">
                         <div class="overlay">
                             <h3>Nyi Roro Kidul</h3>
-                            <p>Lukisan yang menggambarkan keanggunan wanita Bali</p>
+                            <p>Lukisan yang menggambarkan legenda mistis Ratu Pantai Selatan. Karya ini memadukan elemen mitologi dan keindahan estetika tradisional Indonesia.</p>
                         </div>
                     </div>
                     <div class="masonry-item">
-                        <img src="assets/Ibu dan Anak.webp" alt="Potret Diri 1960">
+                        <img src="assets/Ibu dan Anak.webp" alt="Ibu dan Anak">
                         <div class="overlay">
                             <h3>Ibu dan Anak</h3>
-                            <p>Potret diri Basoeki Abdullah dari era 1960-an</p>
+                            <p>Potret penuh kasih sayang antara ibu dan anak. Lukisan ini menampilkan kepekaan Basoeki dalam menggambarkan hubungan manusia yang universal.</p>
                         </div>
                     </div>
                     <div class="masonry-item">
-                        <img src="assets/22.jpg" alt="Pemandangan Gunung">
+                        <img src="assets/22.jpg" alt="Gede Pangrango">
                         <div class="overlay">
                             <h3>Gede Pangrango <br> (karya Sudjono Abdullah)</h3>
-                            <p>Lukisan pemandangan gunung yang dramatis</p>
+                            <p>Lukisan pemandangan gunung yang dramatis. Karya ini menangkap keagungan alam Indonesia dengan palet warna yang kaya.</p>
                         </div>
                     </div>
                     <div class="masonry-item">
-                        <img src="assets/Diponegoro.webp" alt="Pantai Flores">
+                        <img src="assets/Diponegoro.webp" alt="Diponegoro">
                         <div class="overlay">
                             <h3>Diponegoro</h3>
-                            <p>Karya pemandangan pantai yang memukau</p>
+                            <p>Potret heroik Pangeran Diponegoro dalam perjuangan melawan penjajah. Lukisan ini menggambarkan semangat perlawanan dan keberanian nasional.</p>
                         </div>
                     </div>
                     <div class="masonry-item">
-                        <img src="assets/Gatotkaca dan Antasena.webp" alt="Pantai Flores">
+                        <img src="assets/Gatotkaca dan Antasena.webp" alt="Gatotkaca dan Antasena">
                         <div class="overlay">
                             <h3>Gatotkaca dan Antasena</h3>
-                            <p>Karya pemandangan pantai yang memukau</p>
+                            <p>Karya epik yang menggambarkan tokoh pewayangan. Lukisan ini memadukan elemen mitologi Jawa dengan gaya realisme Basoeki.</p>
                         </div>
                     </div>
                     <div class="masonry-item">
-                        <img src="assets/Rahwana dan Djatayu.webp" alt="Pantai Flores">
+                        <img src="assets/Rahwana dan Djatayu.webp" alt="Rahwana dan Djatayu">
                         <div class="overlay">
                             <h3>Rahwana dan Djatayu</h3>
-                            <p>Karya pemandangan pantai yang memukau</p>
+                            <p>Lukisan dramatis dari cerita Ramayana. Karya ini menonjolkan konflik epik dengan komposisi dinamis dan ekspresif.</p>
                         </div>
                     </div>
                 </div>
@@ -875,7 +920,7 @@
             <section class="exhibitions">
                 <div class="section-header">
                     <h2>Exhibitions & Events</h2>
-                    <a href="#" class="see-all-link">Lihat Semua...</a>
+                    <a href="exhibitions.html" class="see-all-link">Lihat Semua...</a>
                 </div>
                 <div id="events-container" class="events-container"></div>
             </section>
@@ -903,55 +948,63 @@
                     <div class="collections-frame">
                         <div class="masonry-container">
                             <div class="masonry-item">
-                                <img src="assets/1.jpg" alt="Potret Soekarno">
+                                <img src="assets/1.jpg" alt="14 Pemimpin GNB">
                                 <div class="overlay">
-                                    <h3>Potret Soekarno</h3>
+                                    <h3>14 Pemimpin GNB <br> dari M. Zanawi (Ethiophia)</h3>
+                                    <p>Lukisan yang mengabadikan para pemimpin Gerakan Non-Blok. Karya ini mencerminkan peran penting Indonesia dalam diplomasi global pada masa itu.</p>
                                 </div>
                             </div>
                             <div class="masonry-item">
-                                <img src="assets/15.jpg" alt="Wanita Bali">
+                                <img src="assets/15.jpg" alt="Tari Sulawesi">
                                 <div class="overlay">
-                                    <h3>Wanita Bali</h3>
+                                    <h3>Tari Sulawesi <br> (Art of Dance From Sulawesi)</h3>
+                                    <p>Lukisan yang menggambarkan keindahan tarian tradisional Sulawesi. Karya ini menonjolkan detail kostum dan gerakan yang penuh makna budaya.</p>
                                 </div>
                             </div>
                             <div class="masonry-item">
-                                <img src="assets/10.jpg" alt="Potret Diri 1960">
+                                <img src="assets/10.jpg" alt="Ibu Tien Soeharto">
                                 <div class="overlay">
-                                    <h3>Potret Diri 1960</h3>
+                                    <h3>Ibu Tien Soeharto</h3>
+                                    <p>Potret Ibu Negara Indonesia yang elegan. Lukisan ini menunjukkan kepekaan Basoeki dalam menangkap kemuliaan dan keanggunan.</p>
                                 </div>
                             </div>
                             <div class="masonry-item">
-                                <img src="assets/20.jpg" alt="Pantai Flores">
+                                <img src="assets/20.jpg" alt="Telaga Sarangan">
                                 <div class="overlay">
-                                    <h3>Pantai Flores</h3>
+                                    <h3>Telaga Sarangan <br> (karya Sudjono Abdullah)</h3>
+                                    <p>Lukisan pemandangan Telaga Sarangan yang menenangkan. Karya ini menampilkan keindahan alam dengan komposisi warna yang harmonis.</p>
                                 </div>
                             </div>
                             <div class="masonry-item">
-                                <img src="assets/25.jpg" alt="Pemandangan Desa">
+                                <img src="assets/25.jpg" alt="Sketsa Bapak">
                                 <div class="overlay">
-                                    <h3>Pemandangan Desa</h3>
+                                    <h3>Sketsa Bapak</h3>
+                                    <p>Sketsa yang menggambarkan figur ayah dengan penuh makna. Karya ini menonjolkan teknik sketsa Basoeki yang sederhana namun penuh emosi.</p>
                                 </div>
                             </div>
                             <div class="masonry-item">
-                                <img src="assets/29.jpg" alt="Topeng Sebagai Sandiwara Kehidupan">
-                                <div class="overlay">
-                                    <h3>Topeng Sebagai Sandiwara Kehidupan</h3>
-                                </div>
-                            </div>
-                            <div class="masonry-item">
-                                <img src="assets/30.jpg" alt="Sungai Tak Pernah Kembali">
+                                <img src="assets/29.jpg" alt="Sungai Tak Pernah Kembali">
                                 <div class="overlay">
                                     <h3>Sungai Tak Pernah Kembali</h3>
+                                    <p>Lukisan yang melambangkan perjalanan waktu. Karya ini menggunakan simbolisme untuk menyampaikan pesan filosofis tentang kehidupan.</p>
                                 </div>
                             </div>
                             <div class="masonry-item">
-                                <img src="assets/11.jpg" alt="Topeng Sebagai Sandiwara Kehidupan">
+                                <img src="assets/30.jpg" alt="Ratu Juliana">
                                 <div class="overlay">
-                                    <h3>Topeng Sebagai Sandiwara Kehidupan</h3>
+                                    <h3>Ratu Juliana</h3>
+                                    <p>Potret Ratu Juliana dari Belanda. Lukisan ini menunjukkan kemampuan Basoeki dalam melukis tokoh internasional dengan gaya realistis.</p>
+                                </div>
+                            </div>
+                            <div class="masonry-item">
+                                <img src="assets/11.jpg" alt="Pratiwi Sudharmono">
+                                <div class="overlay">
+                                    <h3>Pratiwi Sudharmono <br> (Astronot Indonesia)</h3>
+                                    <p>Potret astronot pertama Indonesia. Karya ini mengabadikan prestasi ilmiah Indonesia dengan detail yang memukau.</p>
                                 </div>
                             </div>
                         </div>
-                        <a href="#" class="explore-btn">Jelajahi</a>
+                        <a href="collections.html" class="explore-btn">Jelajahi</a>
                     </div>
                 </div>
                 <div class="separator"></div>
@@ -994,6 +1047,11 @@
         </div>
     </div>
 
+    <!-- Back to Top button -->
+    <a href="#" class="back-to-top" title="Kembali ke Atas">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
     <!-- Footer dengan tautan sosial dan formulir newsletter -->
     <footer>
         <div class="footer-logo">Museum Basoeki Abdullah</div>
@@ -1015,7 +1073,7 @@
         <p>© 2025 Museum Basoeki Abdullah. All rights reserved.</p>
     </footer>
 
-    <!-- JavaScript untuk animasi dan React -->
+    <!-- JavaScript untuk animasi, React, dan navigasi -->
     <script type="text/babel">
         // Define React components
         const ExhibitionCard = ({ title, description, date, imageSrc, alt }) => {
@@ -1072,8 +1130,34 @@
             root.render(<Exhibitions />);
         }
 
-        // jQuery untuk animasi fade-in dan Intersection Observer
+        // jQuery untuk animasi fade-in, navigasi, dan Intersection Observer
         $(document).ready(function() {
+            // Navigasi bar: hide saat scroll ke bawah, show saat scroll ke atas
+            let lastScrollTop = 0;
+            $(window).scroll(function() {
+                let currentScrollTop = $(this).scrollTop();
+                if (currentScrollTop > lastScrollTop) {
+                    // Scroll ke bawah
+                    $('header').addClass('hidden');
+                } else {
+                    // Scroll ke atas
+                    $('header').removeClass('hidden');
+                }
+                lastScrollTop = currentScrollTop;
+
+                // Back to Top button visibility
+                if (currentScrollTop > 300) {
+                    $('.back-to-top').addClass('show');
+                } else {
+                    $('.back-to-top').removeClass('show');
+                }
+            });
+
+            $('.back-to-top').click(function(e) {
+                e.preventDefault();
+                $('html, body').animate({ scrollTop: 0 }, 600);
+            });
+
             // Animasi fade-in untuk interstitial
             function checkFadeIn() {
                 const fadeElements = document.querySelectorAll('.interstitial-section .inner');
