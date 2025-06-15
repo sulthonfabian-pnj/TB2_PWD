@@ -11,447 +11,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- jQuery for animations -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <style>
-        /* Reset and base styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Open Sans', sans-serif;
-            color: #333;
-            line-height: 1.6;
-            background: url('https://i0.wp.com/direktorionlinemuseumdiindonesia.wordpress.com/wp-content/uploads/2017/05/mus-basuk-abdullah.jpg?w=2100&h=&ssl=1') no-repeat fixed center/cover;
-            background-attachment: fixed;
-            overflow-x: hidden;
-        }
-
-        /* Header styles */
-        header {
-            background-color: #000;
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            transition: transform 0.3s ease;
-        }
-
-        header.hidden {
-            transform: translateY(-100%);
-        }
-
-        .nav-left {
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-left nav a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 16px;
-            text-transform: uppercase;
-            margin: 0 15px;
-            position: relative;
-            transition: color 0.3s;
-        }
-
-        .nav-left nav a:first-child {
-            margin-left: 0;
-        }
-
-        .nav-left nav a:hover {
-            color: #f5a623;
-        }
-
-        .nav-left nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background-color: #f5a623;
-            transition: width 0.3s ease, left 0.3s ease;
-        }
-
-        .nav-left nav a:hover::after {
-            width: 100%;
-            left: 0;
-        }
-
-        .nav-separator {
-            color: #fff;
-            margin: 0 10px;
-        }
-
-        .right-section {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-        }
-
-        .operating-hours {
-            color: #fff;
-            font-size: 16px;
-        }
-
-        .tickets-btn {
-            background-color: #f5a623;
-            color: #fff;
-            padding: 12px 25px;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 10px;
-            transition: background-color 0.3s;
-        }
-
-        .tickets-btn:hover {
-            background-color: #e5941e;
-        }
-
-        /* Hero section */
-        .hero {
-            position: relative;
-            height: 50vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 48px;
-            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
-            margin-bottom: 20px;
-            opacity: 0;
-            transform: scale(0.8);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .hero p {
-            font-size: 18px;
-            max-width: 600px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            transform: scale(0.8);
-            transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s;
-        }
-
-        .hero.visible h1,
-        .hero.visible p {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        /* Content section */
-        .content-section {
-            padding: 40px 20px;
-            background: rgba(255, 255, 255, 0.95);
-            margin: 20px auto;
-            border-radius: 8px;
-            max-width: 1400px;
-        }
-
-        .content-section h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 36px;
-            color: #333;
-            margin-bottom: 30px;
-            text-align: center;
-            text-transform: uppercase;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .content-section.visible h2 {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Events container */
-        .events-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .event-card {
-            background: #fff;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            opacity: 0;
-            transform: perspective(1000px) rotateY(90deg);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .event-card.visible {
-            opacity: 1;
-            transform: perspective(1000px) rotateY(0deg);
-        }
-
-        .event-card:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            background-color: #f5a623;
-        }
-
-        .event-card .image-wrapper {
-            width: 100%;
-            height: 250px;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #f9f9f9;
-        }
-
-        .event-card img {
-            width: 100%;
-            max-height: 250px;
-            object-fit: contain;
-            display: block;
-        }
-
-        .event-card .event-info {
-            padding: 20px;
-            text-align: center;
-        }
-
-        .event-card h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: #333;
-            transition: color 0.3s;
-        }
-
-        .event-card p {
-            font-size: 16px;
-            color: #555;
-            margin-bottom: 15px;
-            transition: color 0.3s;
-        }
-
-        .event-card:hover h3,
-        .event-card:hover p {
-            color: #fff;
-        }
-
-        /* Back to Top button */
-        .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: #f5a623;
-            color: #fff;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            text-decoration: none;
-            opacity: 0;
-            visibility: hidden;
-            transform: scale(0);
-            transition: opacity 0.3s, visibility 0.3s, transform 0.3s ease, background-color 0.3s;
-            z-index: 1000;
-        }
-
-        .back-to-top.show {
-            opacity: 1;
-            visibility: visible;
-            transform: scale(1);
-        }
-
-        .back-to-top:hover {
-            background-color: #e5941e;
-        }
-
-        /* Footer styles */
-        footer {
-            background-color: #000;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        footer .footer-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        footer a {
-            color: #f5a623;
-            text-decoration: none;
-            margin: 0 15px;
-            position: relative;
-            transition: color 0.3s;
-        }
-
-        footer a:hover {
-            color: #e5941e;
-        }
-
-        footer a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background-color: #f5a623;
-            transition: width 0.3s ease, left 0.3s ease;
-        }
-
-        footer a:hover::after {
-            width: 100%;
-            left: 0;
-        }
-
-        .social-media {
-            margin: 20px 0;
-        }
-
-        .social-media a {
-            margin: 0 15px;
-            display: inline-block;
-        }
-
-        .newsletter h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-
-        .newsletter form {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .newsletter input {
-            padding: 12px;
-            border: none;
-            flex: 1;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-
-        .newsletter button {
-            background-color: #f5a623;
-            color: #fff;
-            padding: 12px 25px;
-            border: none;
-            cursor: pointer;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: background-color 0.3s;
-        }
-
-        .newsletter button:hover {
-            background-color: #e5941e;
-        }
-
-        /* Responsive design */
-        @media (max-width: 1200px) {
-            .events-container {
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 36px;
-            }
-
-            .hero p {
-                font-size: 16px;
-                max-width: 90%;
-            }
-
-            .events-container {
-                grid-template-columns: 1fr;
-            }
-
-            .event-card .image-wrapper {
-                height: 200px;
-            }
-
-            header {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .nav-left, .right-section {
-                width: 100%;
-                justify-content: center;
-                text-align: center;
-            }
-
-            .nav-left nav {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .nav-separator {
-                display: none;
-            }
-
-            .back-to-top {
-                bottom: 20px;
-                right: 20px;
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 28px;
-            }
-
-            .hero {
-                height: 40vh;
-            }
-
-            .content-section h2 {
-                font-size: 28px;
-            }
-
-            .event-card .image-wrapper {
-                height: 150px;
-            }
-
-            .newsletter form {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-    </style>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="StylesCollect.css">
+    <script src="collections.js"></script>
 </head>
 <body>
     <!-- Header with navigation -->
@@ -512,8 +74,8 @@
                     <img src="assets/Gatotkaca dan Antasena.webp" alt="Kisah Rakyat">
                 </div>
                 <div class="event-info">
-                    <h3>Kisah Rakyat</h3>
-                    <p>Kunjungi beragam lukisan dengan tema cerita rakyat</p>
+                    <h3>Gatotkaca & Antasena</h3>
+                    <p>Pertarungan antar hubungan keluarga</p>
                 </div>
             </div>
             <div class="event-card">
@@ -532,6 +94,60 @@
                 <div class="event-info">
                     <h3>Abstraksi</h3>
                     <p>Beragam lukisan abstrak yang melambangkan ekspresi yang bermacam-macam</p>
+                </div>
+            </div>
+            <div class="event-card">
+                <div class="image-wrapper">
+                    <img src="assets/Diponegoro.webp" alt="Abstraksi">
+                </div>
+                <div class="event-info">
+                    <h3>Pahlawan</h3>
+                    <p>Jelajahi karya karya yang menggambarkan perjuangan Indonesia di masa penjajahan</p>
+                </div>
+            </div>
+            <div class="event-card">
+                <div class="image-wrapper">
+                    <img src="assets/Rahwana dan Djatayu.webp" alt="Abstraksi">
+                </div>
+                <div class="event-info">
+                    <h3>Ramayana</h3>
+                    <p>Jelajahi karya tentang epos Ramayana yang terkenal</p>
+                </div>
+            </div>
+            <div class="event-card">
+                <div class="image-wrapper">
+                    <img src="assets/Soekarno.webp" alt="Abstraksi">
+                </div>
+                <div class="event-info">
+                    <h3>Soekarno</h3>
+                    <p>Presiden Pertama Republik Indonesia</p>
+                </div>
+            </div>
+            <div class="event-card">
+                <div class="image-wrapper">
+                    <img src="assets/24.jpg" alt="Abstraksi">
+                </div>
+                <div class="event-info">
+                    <h3>Wahidin Sudirohusodo</h3>
+                    <p>Pencetus Organisasi Boedi Oetomo</p>
+                </div>
+            </div>
+            <div class="event-card">
+                <div class="image-wrapper">
+                    <img src="assets/Kakak dan Adik.webp" alt="Abstraksi">
+                </div>
+                <div class="event-info">
+                    <h3>Kakak & Adik</h3>
+                    <p>Kebersamaan antar saudara</p>
+                </div>
+            </div>
+            <div class="event-card">
+                <div class="image-wrapper">
+                    <img src="assets/Nyi Roro Kidul.webp" alt="Abstraksi">
+                </div>
+                <div class="event-info">
+                    <h3>Nyi Roro Kidul</h3>
+                    <p>Penjaga pantai selatan yang sangatlah melegenda</p>
                 </div>
             </div>
         </div>
@@ -564,76 +180,6 @@
     </footer>
 
     <!-- JavaScript for animations -->
-    <script>
-        $(document).ready(function() {
-            // Navigation bar: hide on scroll down, show on scroll up
-            let lastScrollTop = 0;
-            $(window).scroll(function() {
-                let currentScrollTop = $(this).scrollTop();
-                if (currentScrollTop > lastScrollTop) {
-                    // Scroll down
-                    $('header').addClass('hidden');
-                } else {
-                    // Scroll up
-                    $('header').removeClass('hidden');
-                }
-                lastScrollTop = currentScrollTop;
-
-                // Back to Top button visibility
-                if (currentScrollTop > 300) {
-                    $('.back-to-top').addClass('show');
-                } else {
-                    $('.back-to-top').removeClass('show');
-                }
-            });
-
-            $('.back-to-top').click(function(e) {
-                e.preventDefault();
-                $('html, body').animate({ scrollTop: 0 }, 600);
-            });
-
-            // Intersection Observer for animations
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1
-            };
-
-            // Hero section animation
-            const heroObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        $('.hero').addClass('visible');
-                    } else {
-                        $('.hero').removeClass('visible');
-                    }
-                });
-            }, observerOptions);
-
-            const heroSection = document.querySelector('.hero');
-            if (heroSection) heroObserver.observe(heroSection);
-
-            // Content section animation
-            const contentObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        $('.content-section').addClass('visible');
-                        // Stagger event card animations
-                        $('.event-card').each(function(index) {
-                            $(this).delay(index * 200).queue(function() {
-                                $(this).addClass('visible').dequeue();
-                            });
-                        });
-                    } else {
-                        $('.content-section').removeClass('visible');
-                        $('.event-card').removeClass('visible');
-                    }
-                });
-            }, observerOptions);
-
-            const contentSection = document.querySelector('.content-section');
-            if (contentSection) contentObserver.observe(contentSection);
-        });
-    </script>
+    
 </body>
 </html>

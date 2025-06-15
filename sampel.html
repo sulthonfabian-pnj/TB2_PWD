@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Mengatur karakter encoding dan responsivitas viewport -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Museum Basoeki Abdullah</title>
+    <!-- Mengimpor font Playfair Display untuk judul dan Open Sans untuk teks -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for back-to-top arrow icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Mengimpor jQuery dari CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Mengimpor React dan ReactDOM dari CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <!-- Mengimpor Babel untuk JSX -->
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.24.7/babel.min.js"></script>
+    <style>
+        /* Mengatur reset margin, padding, dan box-sizing untuk konsistensi */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Mengatur gaya dasar body dengan latar belakang gambar museum */
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: url('https://i0.wp.com/direktorionlinemuseumdiindonesia.wordpress.com/wp-content/uploads/2017/05/mus-basuk-abdullah.jpg?w=2100&h=&ssl=1') no-repeat fixed center/cover;
+            background-attachment: fixed;
+        }
+
+        /* Gaya untuk header, termasuk navigasi dan tombol tiket */
+        header {
+            background-color: #000;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        header.hidden {
+            transform: translateY(-100%);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            padding-left: 20px;
+        }
+
+        /* Gaya untuk tautan navigasi dengan efek hover */
+        .nav-left nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            text-transform: uppercase;
+            margin: 0 15px;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-left nav a:first-child {
+            margin-left: 0;
+        }
+
+        .nav-left nav a:hover {
+            color: #f5a623;
+        }
+
+        .nav-left nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #f5a623;
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        .nav-left nav a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .nav-separator {
+            color: #fff;
+            margin: 0 10px;
+        }
+
+        .right-section {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            padding-right: 20px;
+        }
+
+        .operating-hours {
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .tickets-btn {
+            background-color: #f5a623;
+            color: #fff;
+            padding: 12px 25px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            border-radius: 10px;
+        }
+
+        .tickets-btn:hover {
+            background-color: #e5941e;
+        }
+
+        /* Gaya untuk bagian hero dengan judul besar dan kotak sambutan */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin-left: 30px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 60px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+            letter-spacing: 2px;
+        }
+
+        .welcome-box {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            color: #333;
+            padding: 25px;
+            max-width: 400px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .welcome-box h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        .welcome-box p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .welcome-box a {
+            background-color: #f5a623;
+            color: #fff;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .welcome-box a:hover {
+            background-color: #e5941e;
+        }
+
+        /* Gaya umum untuk section konten */
+        .content-section {
+            position: relative;
+            padding: 20px 0;
+            margin: 30px 0;
+        }
+
+        .content-section .inner {
+            max-width: 100%;
+            margin: 0;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .content-section .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 20px;
+            padding-top: 20px;
+        }
+
+        .content-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            text-transform: uppercase;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .see-all-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .content-section > div {
+            background: #000;
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        /* Gaya untuk masonry grid pada Highlights */
+        .highlights .masonry-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+            column-count: 3;
+            column-gap: 24px;
+        }
+
+        .highlights .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 24px;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #f9f9f9;
+            position: relative;
+        }
+
+        .highlights .masonry-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        .highlights .masonry-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Overlay detail saat hover untuk Highlights */
+        .highlights .masonry-item .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .highlights .masonry-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .highlights .masonry-item .overlay h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .highlights .masonry-item .overlay p {
+            font-size: 14px;
+            color: #ddd;
+        }
+
+        /* Gaya untuk masonry grid pada Jelajahi Koleksi */
+        .collections .masonry-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 24px;
+            column-count: 3;
+            column-gap: 24px;
+            position: relative;
+            padding-bottom: 100px;
+            overflow: hidden;
+        }
+
+        /* Fade effect at the bottom */
+        .collections .masonry-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .collections .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 24px;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #f9f9f9;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(-50px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .collections .masonry-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .collections .masonry-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        .collections .masonry-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Overlay detail saat hover untuk Jelajahi Koleksi */
+        .collections .masonry-item .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .collections .masonry-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .collections .masonry-item .overlay h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* Frame untuk tombol Jelajahi di tengah bawah */
+        .collections-frame {
+            position: relative;
+        }
+
+        .collections .explore-btn {
+            display: inline-block;
+            padding: 15px 35px;
+            background-color: #f5a623;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .collections .explore-btn:hover {
+            background-color: #e5941e;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Gaya untuk bagian interstitial (fakta menarik) */
+        .interstitial-section .inner {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .interstitial-section .inner.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fun-fact h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .fun-fact p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* Gaya untuk bagian exhibitions */
+        .exhibitions .events-container {
+            display: flex;
+            gap: 20px;
+            padding-bottom: 20px;
+            padding-top: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .event-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s, transform 0.3s;
+            border-radius: 10px;
+            min-width: 280px;
+            max-width: 650px;
+            opacity: 0;
+            transform: translateX(-100%);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .event-card.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .event-card:nth-child(2) {
+            transition-delay: 0.3s;
+        }
+
+        .event-card:hover {
+            background-color: #f5a623;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .event-card .event-image {
+            width: 100%;
+            height: 650px;
+            object-fit: cover;
+            display: block;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .event-card .event-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .event-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+            transition: color 0.3s;
+        }
+
+        .event-card p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 15px;
+            transition: color 0.3s;
+        }
+
+        .event-card .date {
+            font-size: 16px;
+            color: #000;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .event-card:hover h3,
+        .event-card:hover p,
+        .event-card:hover .date {
+            color: #fff;
+        }
+
+        /* Garis pemisah antar section */
+        .separator {
+            height: 2px;
+            background-color: #fff;
+            margin: 20px 0;
+        }
+
+        /* Gaya untuk timeline dengan scroll horizontal */
+        .timeline .timeline-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding-bottom: 20px;
+            scrollbar-width: thin;
+        }
+
+        .timeline .timeline-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .timeline .timeline-container::-webkit-scrollbar-thumb {
+            background: #f5a623;
+        }
+
+        .timeline-item {
+            flex: 0 0 200px;
+            background: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            opacity: 0;
+            transform: scale(0.5) rotate(-15deg);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: scale(1) rotate(0);
+        }
+
+        .timeline-item h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .timeline-item p {
+            font-size: 14px;
+            color: #fff;
+        }
+
+        /* Back to Top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #f5a623;
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0);
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s ease, background-color 0.3s;
+            z-index: 1000;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .back-to-top:hover {
+            background-color: #e5941e;
+        }
+
+        /* Gaya untuk footer */
+        footer {
+            background-color: #000;
+            backdrop-filter: blur(5px);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        footer .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        footer a {
+            color: #f5a623;
+            text-decoration: none;
+            margin: 0 15px;
+            position: relative;
+        }
+
+        footer a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #f5a623;
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        footer a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .footer-nav {
+            margin-bottom: 20px;
+        }
+
+        .social-media {
+            margin: 20px 0;
+        }
+
+        .social-media a {
+            margin: 0 15px;
+            display: inline-block;
+        }
+
+        .newsletter {
+            margin-top: 20px;
+        }
+
+        .newsletter h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .newsletter form {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter input {
+            padding: 12px;
+            border: none;
+            flex: 1;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .newsletter button {
+            background-color: #f5a623;
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .newsletter button:hover {
+            background-color: #e5941e;
+        }
+
+        /* Responsivitas untuk layar kecil */
+        @media (max-width: 1200px) {
+            .highlights .masonry-container,
+            .collections .masonry-container {
+                max-width: 900px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .highlights .masonry-container,
+            .collections .masonry-container {
+                max-width: 600px;
+                column-count: 2;
+            }
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .nav-left, .right-section {
+                width: 100%;
+                justify-content: center;
+            }
+            .hero h1 {
+                font-size: 40px;
+            }
+            .welcome-box {
+                max-width: 300px;
+                padding: 20px;
+            }
+            .content-section {
+                margin: 20px 0;
+            }
+            .hero-content {
+                margin-left: 20px;
+            }
+            .event-card {
+                max-width: 350px;
+            }
+            .event-card .event-image {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .highlights .masonry-container,
+            .collections .masonry-container {
+                max-width: 300px;
+                column-count: 1;
+            }
+            .collections .explore-btn {
+                padding: 12px 25px;
+                bottom: 20px;
+            }
+            header nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .nav-left nav a {
+                margin: 0 10px;
+            }
+            .nav-separator {
+                display: none;
+            }
+            .hero h1 {
+                font-size: 30px;
+            }
+            .welcome-box {
+                max-width: 250px;
+                padding: 15px;
+            }
+            .newsletter form {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .content-section {
+                margin: 20px 0;
+            }
+            .hero-content {
+                margin-left: 15px;
+            }
+            .event-card {
+                min-width: 100%;
+            }
+            .event-card .event-image {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header dengan navigasi dan informasi jam operasional -->
+    <header>
+        <div class="nav-left">
+            <nav>
+                <a href="index.html">Beranda</a><span class="nav-separator">|</span>
+                <a href="visit.html">Kunjungi Museum</a><span class="nav-separator">|</span>
+                <a href="exhibitions.html">Pameran & Acara</a><span class="nav-separator">|</span>
+                <a href="collections.html">Jelajahi Koleksi</a>
+            </nav>
+        </div>
+        <div class="right-section">
+            <span class="operating-hours">Buka Hari Ini: 8:00 → 16:00</span>
+            <a href="https://www.traveloka.com" class="tickets-btn">Tiket</a>
+        </div>
+    </header>
+
+    <!-- Bagian hero dengan judul dan kotak sambutan -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Museum Basoeki Abdullah</h1>
+            <div class="welcome-box">
+                <h2>Selamat datang di Museum Basoeki Abdullah</h2>
+                <p>Jelajahi ruang seni dari mahakarya sang legenda seniman Basoeki Abdullah</p>
+                <a href="visit.html">Plan Your Visit</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bagian Highlights untuk menampilkan karya individu -->
+    <div class="content-section">
+        <div class="inner">
+            <section class="highlights">
+                <div class="section-header">
+                    <h2>HIGHLIGHTS</h2>
+                </div>
+                <div class="masonry-container">
+                    <div class="masonry-item">
+                        <img src="assets/Soekarno.webp" alt="Potret Soekarno">
+                        <div class="overlay">
+                            <h3>Potret Soekarno</h3>
+                            <p>Potret ikonik Presiden Soekarno, pemrakarsa Gerakan Non-Blok. Dilukis dengan detail realistis, karya ini menangkap karisma dan visi Soekarno sebagai pemimpin bangsa.</p>
+                        </div>
+                    </div>
+                    <div class="masonry-item">
+                        <img src="assets/Kakak dan Adik.webp" alt="Kakak dan Adik">
+                        <div class="overlay">
+                            <h3>Kakak dan Adik</h3>
+                            <p>Lukisan yang menggambarkan kehangatan hubungan keluarga. Karya ini menonjolkan kemampuan Basoeki dalam menangkap emosi manusia dengan sapuan kuas yang lembut.</p>
+                        </div>
+                    </div>
+                    <div class="masonry-item">
+                        <img src="assets/21.jpg" alt="Potret Diri Basoeki Abdullah">
+                        <div class="overlay">
+                            <h3>Potret Diri Basoeki Abdullah</h3>
+                            <p>Ekspresi pribadi sang seniman melalui potret dirinya. Lukisan ini mencerminkan introspeksi dan kepekaan estetika Basoeki terhadap dirinya sendiri.</p>
+                        </div>
+                    </div>
+                    <div class="masonry-item">
+                        <img src="assets/Nyi Roro Kidul.webp" alt="Nyi Roro Kidul">
+                        <div class="overlay">
+                            <h3>Nyi Roro Kidul</h3>
+                            <p>Lukisan yang menggambarkan legenda mistis Ratu Pantai Selatan. Karya ini memadukan elemen mitologi dan keindahan estetika tradisional Indonesia.</p>
+                        </div>
+                    </div>
+                    <div class="masonry-item">
+                        <img src="assets/Ibu dan Anak.webp" alt="Ibu dan Anak">
+                        <div class="overlay">
+                            <h3>Ibu dan Anak</h3>
+                            <p>Potret penuh kasih sayang antara ibu dan anak. Lukisan ini menampilkan kepekaan Basoeki dalam menggambarkan hubungan manusia yang universal.</p>
+                        </div>
+                    </div>
+                    <div class="masonry-item">
+                        <img src="assets/22.jpg" alt="Gede Pangrango">
+                        <div class="overlay">
+                            <h3>Gede Pangrango <br> (karya Sudjono Abdullah)</h3>
+                            <p>Lukisan pemandangan gunung yang dramatis. Karya ini menangkap keagungan alam Indonesia dengan palet warna yang kaya.</p>
+                        </div>
+                    </div>
+                    <div class="masonry-item">
+                        <img src="assets/Diponegoro.webp" alt="Diponegoro">
+                        <div class="overlay">
+                            <h3>Diponegoro</h3>
+                            <p>Potret heroik Pangeran Diponegoro dalam perjuangan melawan penjajah. Lukisan ini menggambarkan semangat perlawanan dan keberanian nasional.</p>
+                        </div>
+                    </div>
+                    <div class="masonry-item">
+                        <img src="assets/Gatotkaca dan Antasena.webp" alt="Gatotkaca dan Antasena">
+                        <div class="overlay">
+                            <h3>Gatotkaca dan Antasena</h3>
+                            <p>Karya epik yang menggambarkan tokoh pewayangan. Lukisan ini memadukan elemen mitologi Jawa dengan gaya realisme Basoeki.</p>
+                        </div>
+                    </div>
+                    <div class="masonry-item">
+                        <img src="assets/Rahwana dan Djatayu.webp" alt="Rahwana dan Djatayu">
+                        <div class="overlay">
+                            <h3>Rahwana dan Djatayu</h3>
+                            <p>Lukisan dramatis dari cerita Ramayana. Karya ini menonjolkan konflik epik dengan komposisi dinamis dan ekspresif.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Bagian interstitial untuk fakta menarik -->
+    <div class="interstitial-section content-section">
+        <div class="inner">
+            <div class="fun-fact">
+                <h3>Tahukah Kamu?</h3>
+                <p>Museum Basoeki Abdullah didirikan pertama kali pada 25 September 2001 di Jalan Keuangan Raya No. 19, Cilandak Barat, Jakarta Selatan!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bagian Exhibitions (dirender oleh React) -->
+    <div class="content-section">
+        <div class="inner">
+            <section class="exhibitions">
+                <div class="section-header">
+                    <h2>Exhibitions & Events</h2>
+                    <a href="exhibitions.html" class="see-all-link">Lihat Semua...</a>
+                </div>
+                <div id="events-container" class="events-container"></div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Bagian interstitial untuk fakta menarik -->
+    <div class="interstitial-section content-section">
+        <div class="inner">
+            <div class="fun-fact">
+                <h3>Tahukah Kamu?</h3>
+                <p>Basoeki Abdullah pernah melukis lebih dari 500 karya sepanjang hidupnya!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bagian Collections dan Timeline -->
+    <div class="content-section">
+        <div class="inner">
+            <section class="collections-timeline">
+                <div class="collections">
+                    <div class="section-header">
+                        <h2>Jelajahi Koleksi</h2>
+                    </div>
+                    <div class="collections-frame">
+                        <div class="masonry-container">
+                            <div class="masonry-item">
+                                <img src="assets/1.jpg" alt="14 Pemimpin GNB">
+                                <div class="overlay">
+                                    <h3>14 Pemimpin GNB <br> dari M. Zanawi (Ethiophia)</h3>
+                                    <p>Lukisan yang mengabadikan para pemimpin Gerakan Non-Blok. Karya ini mencerminkan peran penting Indonesia dalam diplomasi global pada masa itu.</p>
+                                </div>
+                            </div>
+                            <div class="masonry-item">
+                                <img src="assets/15.jpg" alt="Tari Sulawesi">
+                                <div class="overlay">
+                                    <h3>Tari Sulawesi <br> (Art of Dance From Sulawesi)</h3>
+                                    <p>Lukisan yang menggambarkan keindahan tarian tradisional Sulawesi. Karya ini menonjolkan detail kostum dan gerakan yang penuh makna budaya.</p>
+                                </div>
+                            </div>
+                            <div class="masonry-item">
+                                <img src="assets/10.jpg" alt="Ibu Tien Soeharto">
+                                <div class="overlay">
+                                    <h3>Ibu Tien Soeharto</h3>
+                                    <p>Potret Ibu Negara Indonesia yang elegan. Lukisan ini menunjukkan kepekaan Basoeki dalam menangkap kemuliaan dan keanggunan.</p>
+                                </div>
+                            </div>
+                            <div class="masonry-item">
+                                <img src="assets/20.jpg" alt="Telaga Sarangan">
+                                <div class="overlay">
+                                    <h3>Telaga Sarangan <br> (karya Sudjono Abdullah)</h3>
+                                    <p>Lukisan pemandangan Telaga Sarangan yang menenangkan. Karya ini menampilkan keindahan alam dengan komposisi warna yang harmonis.</p>
+                                </div>
+                            </div>
+                            <div class="masonry-item">
+                                <img src="assets/25.jpg" alt="Sketsa Bapak">
+                                <div class="overlay">
+                                    <h3>Sketsa Bapak</h3>
+                                    <p>Sketsa yang menggambarkan figur ayah dengan penuh makna. Karya ini menonjolkan teknik sketsa Basoeki yang sederhana namun penuh emosi.</p>
+                                </div>
+                            </div>
+                            <div class="masonry-item">
+                                <img src="assets/29.jpg" alt="Sungai Tak Pernah Kembali">
+                                <div class="overlay">
+                                    <h3>Sungai Tak Pernah Kembali</h3>
+                                    <p>Lukisan yang melambangkan perjalanan waktu. Karya ini menggunakan simbolisme untuk menyampaikan pesan filosofis tentang kehidupan.</p>
+                                </div>
+                            </div>
+                            <div class="masonry-item">
+                                <img src="assets/30.jpg" alt="Ratu Juliana">
+                                <div class="overlay">
+                                    <h3>Ratu Juliana</h3>
+                                    <p>Potret Ratu Juliana dari Belanda. Lukisan ini menunjukkan kemampuan Basoeki dalam melukis tokoh internasional dengan gaya realistis.</p>
+                                </div>
+                            </div>
+                            <div class="masonry-item">
+                                <img src="assets/11.jpg" alt="Pratiwi Sudharmono">
+                                <div class="overlay">
+                                    <h3>Pratiwi Sudharmono <br> (Astronot Indonesia)</h3>
+                                    <p>Potret astronot pertama Indonesia. Karya ini mengabadikan prestasi ilmiah Indonesia dengan detail yang memukau.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="collections.html" class="explore-btn">Jelajahi</a>
+                    </div>
+                </div>
+                <div class="separator"></div>
+                <div class="timeline">
+                    <h2>Timeline: Karya Basoeki Abdullah</h2>
+                    <div class="timeline-container">
+                        <div class="timeline-item">
+                            <h3>1940-an</h3>
+                            <p>Potret Diri</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3>1950-an</h3>
+                            <p>Pemandangan Alam</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3>1960-an</h3>
+                            <p>Potret Tokoh GNB</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3>1970-an</h3>
+                            <p>Potret Wanita</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3>1980-an</h3>
+                            <p>Karya Realisme</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Bagian interstitial kedua untuk fakta menarik -->
+    <div class="interstitial-section content-section">
+        <div class="inner">
+            <div class="fun-fact">
+                <h3>Tahukah Kamu?</h3>
+                <p>Karya Basoeki Abdullah pernah dipamerkan di Paris pada tahun 1950!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top button -->
+    <a href="#" class="back-to-top" title="Kembali ke Atas">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- Footer dengan tautan sosial dan formulir newsletter -->
+    <footer>
+        <div class="footer-logo">Museum Basoeki Abdullah</div>
+        <div class="social-media">
+            <h3>Follow Us</h3>
+            <a href="https://www.instagram.com" target="_blank">Instagram</a>
+            <a href="https://www.x.com" target="_blank">Twitter/X</a>
+            <a href="https://www.facebook.com" target="_blank">Facebook</a>
+            <a href="https://www.youtube.com" target="_blank">YouTube</a>
+            <a href="https://www.tiktok.com" target="_blank">TikTok</a>
+        </div>
+        <div class="newsletter">
+            <h3>Newsletter</h3>
+            <form>
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+        <p>© 2025 Museum Basoeki Abdullah. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript untuk animasi, React, dan navigasi -->
+    <script type="text/babel">
+        // Define React components
+        const ExhibitionCard = ({ title, description, date, imageSrc, alt }) => {
+            return (
+                <div className="event-card">
+                    <div className="event-info">
+                        <h3>{title}</h3>
+                        <p>{description}</p>
+                        <p className="date">{date}</p>
+                    </div>
+                    <img src={imageSrc} alt={alt} className="event-image" />
+                </div>
+            );
+        };
+
+        const Exhibitions = () => {
+            const events = [
+                {
+                    title: "Menyongsong Hari Esok",
+                    description: "Refleksi Krisis Iklim Melalui Karya Seni",
+                    date: "📅 13 October - 30 November 2023",
+                    imageSrc: "assets/cal-1.jpeg",
+                    alt: "Pameran Menyongsong Hari Esok"
+                },
+                {
+                    title: "Bayang-Bayang Basoeki Abdullah",
+                    description: "Pameran karya talenta muda",
+                    date: "📅 18 May - 08 June 2021",
+                    imageSrc: "assets/cal-2.jpeg",
+                    alt: "Pameran Bayang-Bayang Basoeki Abdullah"
+                }
+            ];
+
+            return (
+                <div className="events-container">
+                    {events.map((event, index) => (
+                        <ExhibitionCard
+                            key={index}
+                            title={event.title}
+                            description={event.description}
+                            date={event.date}
+                            imageSrc={event.imageSrc}
+                            alt={event.alt}
+                        />
+                    ))}
+                </div>
+            );
+        };
+
+        // Render the Exhibitions component
+        const rootElement = document.getElementById('events-container');
+        if (rootElement) {
+            const root = ReactDOM.createRoot(rootElement);
+            root.render(<Exhibitions />);
+        }
+
+        // jQuery untuk animasi fade-in, navigasi, dan Intersection Observer
+        $(document).ready(function() {
+            // Navigasi bar: hide saat scroll ke bawah, show saat scroll ke atas
+            let lastScrollTop = 0;
+            $(window).scroll(function() {
+                let currentScrollTop = $(this).scrollTop();
+                if (currentScrollTop > lastScrollTop) {
+                    // Scroll ke bawah
+                    $('header').addClass('hidden');
+                } else {
+                    // Scroll ke atas
+                    $('header').removeClass('hidden');
+                }
+                lastScrollTop = currentScrollTop;
+
+                // Back to Top button visibility
+                if (currentScrollTop > 300) {
+                    $('.back-to-top').addClass('show');
+                } else {
+                    $('.back-to-top').removeClass('show');
+                }
+            });
+
+            $('.back-to-top').click(function(e) {
+                e.preventDefault();
+                $('html, body').animate({ scrollTop: 0 }, 600);
+            });
+
+            // Animasi fade-in untuk interstitial
+            function checkFadeIn() {
+                const fadeElements = document.querySelectorAll('.interstitial-section .inner');
+                fadeElements.forEach(element => {
+                    const rect = element.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+                    if (rect.top < windowHeight * 0.75) {
+                        element.classList.add('visible');
+                    } else {
+                        element.classList.remove('visible');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', checkFadeIn);
+            window.addEventListener('load', checkFadeIn);
+
+            // Intersection Observer untuk animasi Exhibitions, Collections, dan Timeline
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            // Exhibitions Animation
+            const exhibitionsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        $('.event-card').each(function(index) {
+                            $(this).delay(index * 300).queue(function() {
+                                $(this).addClass('visible').dequeue();
+                            });
+                        });
+                    } else {
+                        $('.event-card').removeClass('visible');
+                    }
+                });
+            }, observerOptions);
+
+            const exhibitionsSection = document.querySelector('.exhibitions');
+            if (exhibitionsSection) exhibitionsObserver.observe(exhibitionsSection);
+
+            // Collections Animation
+            const collectionsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        $('.collections .masonry-item').each(function(index) {
+                            $(this).delay(index * 100).queue(function() {
+                                $(this).addClass('visible').dequeue();
+                            });
+                        });
+                    } else {
+                        $('.collections .masonry-item').removeClass('visible');
+                    }
+                });
+            }, observerOptions);
+
+            const collectionsSection = document.querySelector('.collections');
+            if (collectionsSection) collectionsObserver.observe(collectionsSection);
+
+            // Timeline Animation
+            const timelineObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        $('.timeline-item').each(function(index) {
+                            $(this).delay(index * 200).queue(function() {
+                                $(this).addClass('visible').dequeue();
+                            });
+                        });
+                    } else {
+                        $('.timeline-item').removeClass('visible');
+                    }
+                });
+            }, observerOptions);
+
+            const timelineSection = document.querySelector('.timeline');
+            if (timelineSection) timelineObserver.observe(timelineSection);
+        });
+    </script>
+</body>
+</html>
