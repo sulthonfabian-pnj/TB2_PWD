@@ -8,7 +8,7 @@ const EventCard = ({ title, description, imageSrc, alt }) => {
             <div className="event-info">
                 <h3>{title}</h3>
                 <p>{description}</p>
-                <a href="#" className="book-online">Pesan Online</a>
+                <a href="traveloka.com" className="book-online">Pesan Online</a>
             </div>
         </div>
     );
